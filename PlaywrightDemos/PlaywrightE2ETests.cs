@@ -154,7 +154,7 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                //Headless = false,
                 SlowMo = 2000
             });
 
@@ -177,6 +177,7 @@ public class PlaywrightE2ETests
         Assert.IsTrue(title.Contains("Playwright"));
         await page.Locator("text=Rheinauen").IsVisibleAsync();
 
+        await browserContext.CloseAsync();
         //await page.PauseAsync();
         await browser.CloseAsync();
     }
