@@ -23,8 +23,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore ${{env.solutionpath}}
+      run: dotnet restore ${{env.solutionpath}}\PlayDemo.csproj
     - name: Build
-      run: dotnet build ${{env.solutionpath}} --no-restore
+      run: dotnet build ${{env.solutionpath}}\PlayDemo.csproj --no-restore
     - name: Test
-      run: dotnet test ${{env.solutionpath}} --no-build --verbosity normal
+      run: dotnet test ${{env.solutionpath}}\PlayDemo.csproj --no-build --verbosity normal
