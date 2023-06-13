@@ -13,7 +13,7 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -65,7 +65,7 @@ public class PlaywrightE2ETests
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false,
+            Headless = true,
             SlowMo = 2000
         };
 
@@ -91,7 +91,7 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -121,7 +121,7 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
 
