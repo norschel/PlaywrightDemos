@@ -126,8 +126,8 @@ public class PlaywrightE2ETests
             });
 
         // execute test on iPhone 13 landscape
-        var device = playwright.Devices["iPhone 13 landscape"];
-        var browserContext = await browser.NewContextAsync(device);
+        //var device = playwright.Devices["iPhone 13 landscape"];
+        var browserContext = await browser.NewContextAsync();
 
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://entwicklertag.de/");
