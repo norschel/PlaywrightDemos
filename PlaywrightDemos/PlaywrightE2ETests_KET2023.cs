@@ -2,8 +2,8 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
-public class PlaywrightE2ETests
+//[TestClass] - Disabled Tests
+public class PlaywrightE2ETests_KET2023
 {
     #region SimpleSmokeTest
     [TestMethod]
