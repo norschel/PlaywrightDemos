@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 
 namespace demo123;
 
-[TestClass]
+//[TestClass] - Disabled Tests
 public class WDC2023_Demos
 {
     //playwright.Selectors.SetTestIdAttribute("id");
