@@ -19,7 +19,7 @@ public class Basta2023_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false
+            Headless = true
             ,
             SlowMo = 2000
         };
@@ -100,7 +100,7 @@ public class Basta2023_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -195,7 +195,7 @@ public class Basta2023_Demos
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false,
+            Headless = true,
             SlowMo = 2000
         };
 
@@ -227,7 +227,7 @@ public class Basta2023_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false
+            Headless = true
             //,SlowMo = 2000
         };
 
@@ -269,7 +269,7 @@ public class Basta2023_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 5000
             });
 
