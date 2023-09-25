@@ -87,6 +87,39 @@ public class WDC2023_Demos
 
     #region DownloadTest
     [TestMethod]
+    public async Task SevenZip_PlaywrightDownloadTest_()
+    {
+        var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions
+            {
+                Headless = false,
+                SlowMo = 2000
+            });
+        var browserContext = await browser.NewContextAsync();
+        var page = await browserContext.NewPageAsync();
+
+        await page.GotoAsync("https://www.7-zip.org/");
+
+        await page.ScreenshotAsync(
+            new PageScreenshotOptions
+            {
+                Path = "SevenZipPage.png",
+            });
+
+        var task = page.RunAndWaitForDownloadAsync(async () =>
+        {
+            await page.Locator("[href*=x64]")
+            .And(page.GetByRole(AriaRole.Link))
+            .ClickAsync();
+        });
+
+        await task.Result.SaveAsAsync("7zip-x64.exe");
+        Assert.IsTrue(File.Exists("7zip-x64.exe"));
+        await browser.CloseAsync();
+    }
+
+    [TestMethod]
     public async Task HeiseMediadaten_PlaywrightDownloadTest_()
     {
         var playwright = await Playwright.CreateAsync();
@@ -111,7 +144,6 @@ public class WDC2023_Demos
         Assert.IsTrue(File.Exists("mediadaten_ct_2023.pdf"));
 
         await browser.CloseAsync();
-
     }
     #endregion
 
@@ -211,4 +243,62 @@ public class WDC2023_Demos
     }
     #endregion
 
+    #region Route Demo
+    [TestMethod]
+    public async Task WDC_Playwright_RouteBlockTest()
+    {
+        var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions
+            {
+                Headless = false,
+                SlowMo = 2000
+            });
+
+        var browserContext = await browser.NewContextAsync();
+        var page = await browserContext.NewPageAsync();
+        #region RouteDemo
+
+        await page.RouteAsync("**/*.jpg", route => route.FulfillAsync(new()
+        {
+            Status = 404,
+            ContentType = "text/plain",
+            Body = "Not Found!"
+        }));
+
+        await page.GotoAsync("https://www.web-developer-conference.de/programm/#/");
+        await page.GetByTestId("uc-accept-all-button").ClickAsync();
+
+        await page.ScreenshotAsync(
+            new PageScreenshotOptions
+            {
+                Path = "SevenZipPage.png",
+            });
+
+        await browser.CloseAsync();
+    }
+    #endregion
+
+    #region Route Advanced
+        //await page.RouteAsync("**/*.png", route => route.FulfillAsync(new ()
+        /*{
+            Status = 404,
+            ContentType = "text/plain",
+            Body = "Not Found!"
+        }));*/
+
+        /*await page.RouteAsync("https://ebnerjobs.de/mediadaten/developer-media-jobs", async route =>
+        {
+            var response = await route.FetchAsync();
+            await route.FulfillAsync(new RouteFulfillOptions
+            {
+                Response = response,
+                Headers = new Dictionary<string, string>(response.Headers)
+                {
+                    ["Content-Disposition"] = "attachment"
+                    ,//["Content-Type"] = "application/binary"
+                }
+            });
+        });*/
+    #endregion
 }
