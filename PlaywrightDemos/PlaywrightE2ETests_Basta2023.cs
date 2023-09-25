@@ -4,7 +4,7 @@ using Microsoft.Playwright;
 namespace demo123;
 
 [TestClass]
-public class WDC2023_Demos
+public class Basta2023_Demos
 {
     //playwright.Selectors.SetTestIdAttribute("id");
 
@@ -19,28 +19,32 @@ public class WDC2023_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = true
-            //,SlowMo = 2000
+            Headless = false
+            ,
+            SlowMo = 2000
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
         var context = await browser.NewContextAsync();
+
         var page = await context.NewPageAsync();
-        await page.GotoAsync("https://www.web-developer-conference.de/");
-        await page.GetByTestId("uc-accept-all-button").ClickAsync();
-        await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
+        await page.GotoAsync("https://basta.net/mainz/");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
+        await page.Locator("body").PressAsync("Escape");
+
+        await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=Day3]").First.HighlightAsync();
+        await page.Locator("[href*=Day3]").First.ClickAsync();
+
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_wdc2023.png" });
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
 
-        Assert.IsTrue(
-            page.GetByRole(
-                AriaRole.Heading,
-                new() { Name = "Testautomatisierung für WebApps mit Playwright" })
-            .IsVisibleAsync().Result);
+        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+
         await browser.CloseAsync();
     }
     #endregion
@@ -67,19 +71,22 @@ public class WDC2023_Demos
         var context = await browser.NewContextAsync(browserContextOptions);
 
         var page = await context.NewPageAsync();
-        await page.GotoAsync("https://www.web-developer-conference.de/");
-        await page.GetByTestId("uc-accept-all-button").ClickAsync();
-        await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
+        await page.GotoAsync("https://basta.net/mainz/");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
+        await page.Locator("body").PressAsync("Escape");
+
+        await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=Day3]").First.HighlightAsync();
+        await page.Locator("[href*=Day3]").First.ClickAsync();
+
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
-        Assert.IsTrue(
-            page.GetByRole(
-                AriaRole.Heading,
-                new() { Name = "Testautomatisierung für WebApps mit Playwright" })
-            .IsVisibleAsync().Result);
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
+
+        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -129,20 +136,25 @@ public class WDC2023_Demos
 
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var context = await browser.NewContextAsync();
+
         var page = await context.NewPageAsync();
-        await page.GotoAsync("https://www.web-developer-conference.de/");
-        await page.GetByTestId("uc-accept-all-button").ClickAsync();
-        await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
+        await page.GotoAsync("https://basta.net/mainz/");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
+        await page.Locator("body").PressAsync("Escape");
+
+        await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=Day3]").First.HighlightAsync();
+        await page.Locator("[href*=Day3]").First.ClickAsync();
+
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
-        Assert.IsTrue(
-            page.GetByRole(
-                AriaRole.Heading,
-                new() { Name = "Testautomatisierung für WebApps mit Playwright" })
-            .IsVisibleAsync().Result);
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
+
+        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        await context.CloseAsync();
         await browser.CloseAsync();
     }
 
@@ -186,27 +198,32 @@ public class WDC2023_Demos
             //,SlowMo = 2000
         };
 
-         // execute test on iPhone 13 landscape
+        // execute test on iPhone 13 landscape
         var device = playwright.Devices["iPhone 13 landscape"];
         device.RecordVideoDir = "videos-iPhone/";
         device.RecordVideoSize = new RecordVideoSize() { Width = 1024, Height = 768 };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
         var context = await browser.NewContextAsync(device);
+
         var page = await context.NewPageAsync();
-        await page.GotoAsync("https://www.web-developer-conference.de/");
-        await page.GetByTestId("uc-accept-all-button").ClickAsync();
-        await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
+        await page.GotoAsync("https://basta.net/mainz/");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
+        await page.Locator("body").PressAsync("Escape");
+
+        await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=Day3]").First.HighlightAsync();
+        await page.Locator("[href*=Day3]").First.ClickAsync();
+
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
-        Assert.IsTrue(
-            page.GetByRole(
-                AriaRole.Heading,
-                new() { Name = "Testautomatisierung für WebApps mit Playwright" })
-            .IsVisibleAsync().Result);
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
+
+        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        await context.CloseAsync();
         await browser.CloseAsync();
     }
     #endregion
