@@ -257,7 +257,6 @@ public class WDC2023_Demos
 
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        #region RouteDemo
 
         await page.RouteAsync("**/*.jpg", route => route.FulfillAsync(new()
         {
