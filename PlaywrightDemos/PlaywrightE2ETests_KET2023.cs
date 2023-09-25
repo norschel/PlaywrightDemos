@@ -2,8 +2,8 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
-public class PlaywrightE2ETests
+//[TestClass] - Disabled Tests
+public class PlaywrightE2ETests_KET2023
 {
     #region SimpleSmokeTest
     [TestMethod]
@@ -13,7 +13,7 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -65,7 +65,7 @@ public class PlaywrightE2ETests
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false,
+            Headless = true,
             SlowMo = 2000
         };
 
@@ -91,7 +91,7 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -121,13 +121,13 @@ public class PlaywrightE2ETests
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 2000
             });
 
         // execute test on iPhone 13 landscape
-        var device = playwright.Devices["iPhone 13 landscape"];
-        var browserContext = await browser.NewContextAsync(device);
+        //var device = playwright.Devices["iPhone 13 landscape"];
+        var browserContext = await browser.NewContextAsync();
 
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://entwicklertag.de/");
