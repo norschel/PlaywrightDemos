@@ -29,7 +29,9 @@ public class Basta2023_Demos
 
         var page = await context.NewPageAsync();
         await page.GotoAsync("https://basta.net/mainz/");
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023_1.png" });
         await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023_2.png" });
         await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
         await page.Locator("body").PressAsync("Escape");
 
@@ -41,7 +43,7 @@ public class Basta2023_Demos
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023_3.png" });
 
         Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
 
