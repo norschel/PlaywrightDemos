@@ -45,6 +45,7 @@ jobs:
             $destinationFile = Join-Path $destinationPath $_.Name
             Copy-Item $_.FullName $destinationFile
         };
+        dir $destinationPath
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.3
       if: ${{ always() }}
