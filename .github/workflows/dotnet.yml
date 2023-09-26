@@ -36,8 +36,8 @@ jobs:
     - name: Copy Playwright Diag Data
       if: ${{ always() }}
       run:
-        $sourcePath = ${{github.workspace}}\PlaywrightDemos
-        $destinationPath = ${{github.workspace}}\PlaywrightDiag
+        $sourcePath = ${{github.workspace}}/PlaywrightDemos
+        $destinationPath = ${{github.workspace}}/PlaywrightDiag
 
         mkdir $destinationPath
         Get-ChildItem -Path $sourcePath -Include *.webm,*.png -Recurse | ForEach-Object {
