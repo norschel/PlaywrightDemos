@@ -35,6 +35,7 @@ jobs:
       run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal
     - name: Copy Playwright Diag Data
       if: ${{ always() }}
+      shell: pwsh
       run:
         $sourcePath = "${{github.workspace}}/PlaywrightDemos";
         $destinationPath = "${{github.workspace}}/PlaywrightDiag";
