@@ -51,7 +51,7 @@ jobs:
       with:
         # Artifact name
         name: Playwright
-        path: ${{github.workspace}}\PlaywrightDiag
+        path: ${{github.workspace}}/PlaywrightDiag
         # The desired behavior if no files are found using the provided path.
         retention-days: 90
       
