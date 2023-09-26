@@ -78,7 +78,10 @@ public class Basta2023_Demos
 
         var page = await context.NewPageAsync();
         await page.GotoAsync("https://basta.net/mainz/");
-        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        if (await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).IsVisibleAsync())
+        {
+            await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        }
         await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
         await page.Locator("body").PressAsync("Escape");
 
@@ -178,7 +181,10 @@ public class Basta2023_Demos
 
         var page = await context.NewPageAsync();
         await page.GotoAsync("https://basta.net/mainz/");
-        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        if (await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).IsVisibleAsync())
+        {
+            await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        }
         await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
         await page.Locator("body").PressAsync("Escape");
 
@@ -247,7 +253,10 @@ public class Basta2023_Demos
 
         var page = await context.NewPageAsync();
         await page.GotoAsync("https://basta.net/mainz/");
-        await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        if (await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).IsVisibleAsync())
+        {
+            await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
+        }
         await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
         await page.Locator("body").PressAsync("Escape");
 
