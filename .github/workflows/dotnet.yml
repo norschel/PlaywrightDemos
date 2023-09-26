@@ -34,6 +34,7 @@ jobs:
     - name: Test
       run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal
     - name: Copy Playwright Diag Data
+      if: ${{ always() }}
       run:
         $sourcePath = ${{github.workspace}}\PlaywrightDemos
         $destinationPath = ${{github.workspace}}\PlaywrightDiag
@@ -45,6 +46,7 @@ jobs:
         }
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.3
+      if: ${{ always() }}
       with:
         # Artifact name
         name: Playwright
