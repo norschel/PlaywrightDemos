@@ -36,14 +36,14 @@ jobs:
     - name: Copy Playwright Diag Data
       if: ${{ always() }}
       run:
-        $sourcePath = ${{github.workspace}}/PlaywrightDemos
-        $destinationPath = ${{github.workspace}}/PlaywrightDiag
+        $sourcePath = "${{github.workspace}}/PlaywrightDemos";
+        $destinationPath = "${{github.workspace}}/PlaywrightDiag";
 
-        mkdir $destinationPath
+        mkdir $destinationPath;
         Get-ChildItem -Path $sourcePath -Include *.webm,*.png -Recurse | ForEach-Object {
             $destinationFile = Join-Path $destinationPath $_.Name
             Copy-Item $_.FullName $destinationFile
-        }
+        };
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.3
       if: ${{ always() }}
