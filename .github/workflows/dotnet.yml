@@ -40,6 +40,7 @@ jobs:
         $sourceDirectory = "${{github.workspace}}";
         $destinationDirectory = "${{github.workspace}}/PlaywrightDiag";
         $fileExtensions = @("webm", "png", "jpeg");
+        mkdir $destinationDirectory;
         
         $files = Get-ChildItem -Path $sourceDirectory -Recurse | Where-Object { $_.Extension -in $fileExtensions };
         foreach ($file in $files) {
