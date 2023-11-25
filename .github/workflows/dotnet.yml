@@ -37,7 +37,7 @@ jobs:
       if: ${{ always() }}
       shell: pwsh
       run:
-        $sourceDirectory = "${{github.workspace}}/PlaywrightDemos";
+        $sourceDirectory = "${{github.workspace}}";
         $destinationDirectory = "${{github.workspace}}/PlaywrightDiag";
         $fileExtensions = @("webm", "png", "jpeg");
         
