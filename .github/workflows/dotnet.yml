@@ -39,8 +39,9 @@ jobs:
       run:
         $sourceDirectory = "${{github.workspace}}/PlaywrightDemos";
         $destinationDirectory = "${{github.workspace}}/PlaywrightDiag";
-        $fileExtensions = @("webm", "png", "jpeg")
-        $files = Get-ChildItem -Path $sourceDirectory -Recurse | Where-Object { $_.Extension -in $fileExtensions }
+        $fileExtensions = @("webm", "png", "jpeg");
+        
+        $files = Get-ChildItem -Path $sourceDirectory -Recurse | Where-Object { $_.Extension -in $fileExtensions };
         foreach ($file in $files) {
             $destinationPath = Join-Path -Path $destinationDirectory -ChildPath $file.Name
             Copy-Item -Path $file.FullName -Destination $destinationPath -Force
