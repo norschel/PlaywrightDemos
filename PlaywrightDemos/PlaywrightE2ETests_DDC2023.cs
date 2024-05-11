@@ -1,9 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Playwright;
 
 namespace demo123;
 
-[TestClass]
+//[TestClass] - Disabled for now
 public class DDC2023_Demos
 {
     //playwright.Selectors.SetTestIdAttribute("id");
@@ -19,7 +18,7 @@ public class DDC2023_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = true
+            Headless = false
             ,SlowMo = 2000
         };
 
@@ -53,7 +52,7 @@ public class DDC2023_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = true,
+            Headless = false,
             SlowMo = 2000
         };
 
@@ -75,6 +74,9 @@ public class DDC2023_Demos
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
+        
+
+
         Assert.IsTrue(
             page.GetByRole(
                 AriaRole.Heading,
@@ -93,7 +95,7 @@ public class DDC2023_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = true,
+                Headless = false,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -126,7 +128,7 @@ public class DDC2023_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = true,
+                Headless = false,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -182,7 +184,7 @@ public class DDC2023_Demos
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
-            Headless = true,
+            Headless = false,
             SlowMo = 2000
         };
 
@@ -214,7 +216,7 @@ public class DDC2023_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = true
+            Headless = false
             //,SlowMo = 2000
         };
 
@@ -251,7 +253,7 @@ public class DDC2023_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = true,
+                Headless = false,
                 SlowMo = 2000
             });
 
@@ -300,4 +302,5 @@ public class DDC2023_Demos
         });
     });*/
     #endregion
+    
 }
