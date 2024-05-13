@@ -128,6 +128,39 @@ public class PlaywrightE2ETests_MDD2024
         await browser.CloseAsync();
 
     }
+
+     [TestMethod]
+    public async Task SevenZip_PlaywrightDownloadTest_()
+    {
+        var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions
+            {
+                Headless = false,
+                SlowMo = 2000
+            });
+        var browserContext = await browser.NewContextAsync();
+        var page = await browserContext.NewPageAsync();
+
+        await page.GotoAsync("https://www.7-zip.org/");
+
+        await page.ScreenshotAsync(
+            new PageScreenshotOptions
+            {
+                Path = "SevenZipPage.png",
+            });
+
+        var task = page.RunAndWaitForDownloadAsync(async () =>
+        {
+            await page.Locator("[href*=x64]")
+            .And(page.GetByRole(AriaRole.Link))
+            .ClickAsync();
+        });
+
+        await task.Result.SaveAsAsync("7zip-x64.exe");
+        Assert.IsTrue(File.Exists("7zip-x64.exe"));
+        await browser.CloseAsync();
+    }
     #endregion
 
     #region DeviceTest
