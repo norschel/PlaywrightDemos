@@ -121,9 +121,9 @@ public class PlaywrightE2ETests_MDD2024
             await page.Locator("text=ct_2024").ClickAsync();
         });
 
-        await task.Result.SaveAsAsync("mediadaten_ct_2023.pdf");
+        await task.Result.SaveAsAsync("mediadaten_ct_2024.pdf");
 
-        Assert.IsTrue(File.Exists("mediadaten_ct_2023.pdf"));
+        Assert.IsTrue(File.Exists("mediadaten_ct_2024.pdf"));
 
         await browser.CloseAsync();
 
@@ -171,13 +171,13 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = true,
+                Headless = false,
                 SlowMo = 2000
             });
 
         // execute test on iPhone 13 landscape
-        //var device = playwright.Devices["iPhone 13 landscape"];
-        var browserContext = await browser.NewContextAsync();
+        var device = playwright.Devices["iPhone 13 landscape"];
+        var browserContext = await browser.NewContextAsync(device);
 
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://md-devdays.de/home");
@@ -214,7 +214,7 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                //Headless = false,
+                Headless = false,
                 SlowMo = 2000
             });
 
