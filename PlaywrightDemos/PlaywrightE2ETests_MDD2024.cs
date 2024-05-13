@@ -5,6 +5,10 @@ namespace PlayDemo;
 [TestClass]
 public class PlaywrightE2ETests_MDD2024
 {
+    #region Globals
+    static bool _isHeadless = true;
+    #endregion
+
     #region SimpleSmokeTest
     [TestMethod]
     public async Task MDD_SimpleSmokeTest()
@@ -13,8 +17,8 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
-                SlowMo = 2000
+                Headless = _isHeadless,
+                SlowMo = 2000,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -46,6 +50,7 @@ public class PlaywrightE2ETests_MDD2024
 
     #region DataDrivenSmokeTest
     [DataTestMethod]
+    [TestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]
@@ -82,7 +87,7 @@ public class PlaywrightE2ETests_MDD2024
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
-            Headless = true,
+            Headless = _isHeadless,
             SlowMo = 2000
         };
 
@@ -108,7 +113,7 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -136,7 +141,7 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -171,7 +176,7 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
 
@@ -214,7 +219,7 @@ public class PlaywrightE2ETests_MDD2024
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
 
@@ -239,8 +244,6 @@ public class PlaywrightE2ETests_MDD2024
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
         await sessionLink.ClickAsync();
-
-        //await page.PauseAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
