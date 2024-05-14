@@ -54,6 +54,8 @@ public class PlaywrightE2ETests_MDD2024
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]
+    [DataRow("Edge")]
+    [DataRow("Chrome")]
     public async Task MDD_DataDrivenSmokeTest(string BrowserName)
     {
         var playwright = await Playwright.CreateAsync();
@@ -98,6 +100,12 @@ public class PlaywrightE2ETests_MDD2024
             case "Firefox":
                 return await playwright.Firefox.LaunchAsync(browserOptions);
             case "Webkit":
+                return await playwright.Webkit.LaunchAsync(browserOptions);
+            case "Edge":
+                browserOptions.Channel = "msedge";
+                return await playwright.Webkit.LaunchAsync(browserOptions);
+            case "Chrome":
+                browserOptions.Channel = "chrome";
                 return await playwright.Webkit.LaunchAsync(browserOptions);
             default:
                 throw new ArgumentException("Browser not supported");
