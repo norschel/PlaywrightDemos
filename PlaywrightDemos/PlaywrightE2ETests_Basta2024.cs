@@ -357,8 +357,8 @@ public async void StartTrace(IBrowserContext context)
 
         var traceOptions = new TracingStopOptions
         {
-            //Path = testName + "_trace.zip"
-            Path = "trace.zip"
+            Path = testName + "_trace.zip"
+            //Path = "trace.zip"
         };
         context.Tracing.StopAsync(traceOptions).Wait();
     }
