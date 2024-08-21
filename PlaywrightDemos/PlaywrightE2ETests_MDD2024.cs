@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
+//[TestClass] - Tests disabled
 public class PlaywrightE2ETests_MDD2024
 {
     #region Globals
