@@ -7,7 +7,7 @@ namespace demo123;
 public class Basta2024_Demos
 {
     #region Globals
-    static bool _isHeadless = false;
+    static bool _isHeadless = true;
     static bool _isEnabledTracing = true;
     #endregion
 
