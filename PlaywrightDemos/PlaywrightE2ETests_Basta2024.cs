@@ -7,7 +7,7 @@ namespace demo123;
 public class Basta2024_Demos
 {
     #region Globals
-    static bool _isHeadless = true;
+    static bool _isHeadless = false;
     static bool _isEnabledTracing = true;
     #endregion
 
@@ -223,6 +223,9 @@ public class Basta2024_Demos
                 return await playwright.Firefox.LaunchAsync(browserOptions);
             case "Webkit":
                 return await playwright.Webkit.LaunchAsync(browserOptions);
+            case "Edge":
+                browserOptions.Channel = "msedge";
+                return await playwright.Chromium.LaunchAsync(browserOptions);
             default:
                 throw new ArgumentException("Browser not supported");
         }
@@ -288,8 +291,8 @@ public class Basta2024_Demos
 
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-
-        await page.RouteAsync("**/*.{png,jpg,jpeg,svg}", route => route.FulfillAsync(new()
+        
+        await page.RouteAsync("**/*.{png,jpg,jpeg,svg}*", route => route.FulfillAsync(new()
         {
             Status = 404,
             ContentType = "text/plain",
@@ -316,7 +319,7 @@ public class Basta2024_Demos
     Body = "Not Found!"
 }));*/
 
-/*await page.RouteAsync("https://ebnerjobs.de/mediadaten/developer-media-jobs", async route =>
+/*await page.RouteAsync("https://basta.net/mediadaten/jobs", async route =>
 {
     var response = await route.FetchAsync();
     await route.FulfillAsync(new RouteFulfillOptions
@@ -325,7 +328,7 @@ public class Basta2024_Demos
         Headers = new Dictionary<string, string>(response.Headers)
         {
             ["Content-Disposition"] = "attachment"
-            ,//["Content-Type"] = "application/binary"
+            ,["Content-Type"] = "application/binary"
         }
     });
 });*/
