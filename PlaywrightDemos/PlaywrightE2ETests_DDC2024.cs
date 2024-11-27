@@ -5,6 +5,10 @@ namespace demo123;
 [TestClass]
 public class DDC2024_Demos
 {
+    #region Globals
+    static bool _isHeadless = true;
+    #endregion
+
     #region SimpleSmokeTest
     [TestMethod]
     public async Task DDC2024_SimpleSmokeTest()
@@ -13,8 +17,8 @@ public class DDC2024_Demos
         
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false
-            ,SlowMo = 2000
+            Headless = _isHeadless,
+            SlowMo = 2000
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
@@ -29,7 +33,7 @@ public class DDC2024_Demos
         await page.GetByTestId("696787").HighlightAsync();
         await page.GetByTestId("696787").ClickAsync();
         playwright.Selectors.SetTestIdAttribute("data-testid");
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_wdc2023.png" });
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_ddc2024_1.png" });
 
         Assert.IsTrue(
             page.Locator("#sz-modal-container")
@@ -49,7 +53,7 @@ public class DDC2024_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false,
+            Headless = _isHeadless,
             SlowMo = 2000
         };
 
@@ -66,19 +70,21 @@ public class DDC2024_Demos
         await page.GotoAsync("https://www.dotnet-developer-conference.de/");
         await page.GetByTestId("uc-accept-all-button").ClickAsync();
         await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
-        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
-        await page.Locator("[href*=playwright]").HighlightAsync();
-        await page.Locator("[href*=playwright]").ClickAsync();
-
-        
-
+        await page.ClickAsync("[href*=sz-tab-45624]");
+        playwright.Selectors.SetTestIdAttribute("data-sessionid");
+        await page.GetByTestId("696787").ScrollIntoViewIfNeededAsync();
+        await page.GetByTestId("696787").HighlightAsync();
+        await page.GetByTestId("696787").ClickAsync();
+        playwright.Selectors.SetTestIdAttribute("data-testid");
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_ddc2024_1.png" });
 
         Assert.IsTrue(
-            page.GetByRole(
+            page.Locator("#sz-modal-container")
+            .GetByRole(
                 AriaRole.Heading,
                 new() { Name = "Testautomatisierung für WebApps mit Playwright" })
             .IsVisibleAsync().Result);
+
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -92,7 +98,7 @@ public class DDC2024_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -125,7 +131,7 @@ public class DDC2024_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
@@ -161,19 +167,25 @@ public class DDC2024_Demos
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var context = await browser.NewContextAsync();
         var page = await context.NewPageAsync();
+        
         await page.GotoAsync("https://www.dotnet-developer-conference.de/");
         await page.GetByTestId("uc-accept-all-button").ClickAsync();
         await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
-        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
-        await page.Locator("[href*=playwright]").HighlightAsync();
-        await page.Locator("[href*=playwright]").ClickAsync();
+        await page.ClickAsync("[href*=sz-tab-45624]");
+        playwright.Selectors.SetTestIdAttribute("data-sessionid");
+        await page.GetByTestId("696787").ScrollIntoViewIfNeededAsync();
+        await page.GetByTestId("696787").HighlightAsync();
+        await page.GetByTestId("696787").ClickAsync();
+        playwright.Selectors.SetTestIdAttribute("data-testid");
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_ddc2024_1.png" });
 
         Assert.IsTrue(
-            page.GetByRole(
+            page.Locator("#sz-modal-container")
+            .GetByRole(
                 AriaRole.Heading,
                 new() { Name = "Testautomatisierung für WebApps mit Playwright" })
             .IsVisibleAsync().Result);
+
         await browser.CloseAsync();
     }
 
@@ -181,7 +193,7 @@ public class DDC2024_Demos
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false,
+            Headless = _isHeadless,
             SlowMo = 2000
         };
 
@@ -213,8 +225,8 @@ public class DDC2024_Demos
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = false
-            //,SlowMo = 2000
+            Headless = _isHeadless,
+            SlowMo = 2000
         };
 
         // execute test on iPhone 13 landscape
@@ -225,19 +237,25 @@ public class DDC2024_Demos
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
         var context = await browser.NewContextAsync(device);
         var page = await context.NewPageAsync();
+
         await page.GotoAsync("https://www.dotnet-developer-conference.de/");
         await page.GetByTestId("uc-accept-all-button").ClickAsync();
         await page.ClickAsync("text=Programm");
-        await page.ClickAsync("id=tag-2-label");
-        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
-        await page.Locator("[href*=playwright]").HighlightAsync();
-        await page.Locator("[href*=playwright]").ClickAsync();
+        await page.ClickAsync("[href*=sz-tab-45624]");
+        playwright.Selectors.SetTestIdAttribute("data-sessionid");
+        await page.GetByTestId("696787").ScrollIntoViewIfNeededAsync();
+        await page.GetByTestId("696787").HighlightAsync();
+        await page.GetByTestId("696787").ClickAsync();
+        playwright.Selectors.SetTestIdAttribute("data-testid");
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_ddc2024_1.png" });
 
         Assert.IsTrue(
-            page.GetByRole(
+            page.Locator("#sz-modal-container")
+            .GetByRole(
                 AriaRole.Heading,
                 new() { Name = "Testautomatisierung für WebApps mit Playwright" })
-            .IsVisibleAsync().Result);
+            .IsVisibleAsync().Result);        
+
         await browser.CloseAsync();
     }
     #endregion
@@ -250,7 +268,7 @@ public class DDC2024_Demos
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = _isHeadless,
                 SlowMo = 2000
             });
 
@@ -270,7 +288,7 @@ public class DDC2024_Demos
         await page.ScreenshotAsync(
             new PageScreenshotOptions
             {
-                Path = "SevenZipPage.png",
+                Path = "DDC_page_without_images.png",
             });
 
         await browser.CloseAsync();
