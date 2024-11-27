@@ -141,12 +141,12 @@ public class DDC2024_Demos
 
         var task = page.RunAndWaitForDownloadAsync(async () =>
         {
-            await page.Locator("text=ct_2023").ClickAsync();
+            await page.Locator("text=ct_2024").ClickAsync();
         });
 
-        await task.Result.SaveAsAsync("mediadaten_ct_2023.pdf");
+        await task.Result.SaveAsAsync("mediadaten_ct_2024.pdf");
 
-        Assert.IsTrue(File.Exists("mediadaten_ct_2023.pdf"));
+        Assert.IsTrue(File.Exists("mediadaten_ct_2024.pdf"));
 
         await browser.CloseAsync();
     }
