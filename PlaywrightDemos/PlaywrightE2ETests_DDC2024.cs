@@ -43,7 +43,7 @@ public class DDC2024_Demos
 
     #region Video
     [TestMethod]
-    public async Task DDC2023_Video_SimpleSmokeTest()
+    public async Task DDC2024_Video_SimpleSmokeTest()
     {
         var playwright = await Playwright.CreateAsync();
 
@@ -154,7 +154,7 @@ public class DDC2024_Demos
     [DataRow("Webkit")]
     [DataRow("Edge")]
     [DataRow("Chrome")]
-    public async Task DataDriven_DDC2023_SimpleSmokeTest(string BrowserName)
+    public async Task DataDriven_DDC2024_SimpleSmokeTest(string BrowserName)
     {
         var playwright = await Playwright.CreateAsync();
 
@@ -207,7 +207,7 @@ public class DDC2024_Demos
 
     #region DeviceTest
     //[TestMethod]
-    public async Task DDC2023_DeviceTest_SmokeTest()
+    public async Task DDC2024_DeviceTest_SmokeTest()
     {
         var playwright = await Playwright.CreateAsync();
 
@@ -244,7 +244,7 @@ public class DDC2024_Demos
 
     #region Route Demo
     [TestMethod]
-    public async Task DDC_Playwright_RouteBlockTest()
+    public async Task DDC2024_Playwright_RouteBlockTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
