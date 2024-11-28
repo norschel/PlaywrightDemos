@@ -28,7 +28,7 @@ jobs:
     - name: Build
       run: dotnet build ${{env.solutionpath}}\\PlayDemo.csproj --no-restore
     - name: Install Playwright Browsers
-      run: ./PlaywrightDemos/bin/Debug/net8.0/playwright.ps1 install
+      run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
     - name: Install missing WebKit deps
       run: npx playwright install-deps webkit
     - name: Test
