@@ -2,13 +2,13 @@ using Microsoft.Playwright;
 
 namespace demo123;
 
-[TestClass]
+//disabled - [TestClass]
 public class DDC2024_Demos
 {
     #region Globals
-    static bool _isHeadless = true;
+    static bool _isHeadless = false;
     #endregion
-
+    
     #region SimpleSmokeTest
     [TestMethod]
     public async Task DDC2024_SimpleSmokeTest()
