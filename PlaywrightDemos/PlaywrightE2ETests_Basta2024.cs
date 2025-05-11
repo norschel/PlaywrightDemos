@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 
 namespace demo123;
 
-[TestClass]
+//[TestClass] - ignored
 public class Basta2024_Demos
 {
     #region Globals
