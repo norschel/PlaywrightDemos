@@ -2,11 +2,11 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-//[TestClass] - Tests disabled
+[TestClass]
 public class PlaywrightE2ETests_MDD2025
 {
     #region Globals
-    static bool _isHeadless = true;
+    static bool _isHeadless = false;
     #endregion
 
     #region SimpleSmokeTest
@@ -22,15 +22,15 @@ public class PlaywrightE2ETests_MDD2025
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://md-devdays.de/home");
+        await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Session-Übersicht").First.ClickAsync();
+        await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-1").ClickAsync();
+        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
         var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Testautomatisierung für WebApps mit Playwright" }).
+            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
             GetByText("Mehr Infos");
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
@@ -62,15 +62,15 @@ public class PlaywrightE2ETests_MDD2025
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://md-devdays.de/home");
+        await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Session-Übersicht").First.ClickAsync();
+        await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-1").ClickAsync();
+        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
         var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Testautomatisierung für WebApps mit Playwright" }).
+            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
             GetByText("Mehr Infos");
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
@@ -142,7 +142,7 @@ public class PlaywrightE2ETests_MDD2025
 
     }
 
-     [TestMethod]
+    [TestMethod]
     public async Task SevenZip_PlaywrightDownloadTest_()
     {
         var playwright = await Playwright.CreateAsync();
@@ -191,17 +191,16 @@ public class PlaywrightE2ETests_MDD2025
         // execute test on iPhone 13 landscape
         var device = playwright.Devices["iPhone 13 landscape"];
         var browserContext = await browser.NewContextAsync(device);
-
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://md-devdays.de/home");
+        await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Session-Übersicht").First.ClickAsync();
+        await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-1").ClickAsync();
+        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
         var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Testautomatisierung für WebApps mit Playwright" }).
+            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
             GetByText("Mehr Infos");
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
@@ -239,15 +238,15 @@ public class PlaywrightE2ETests_MDD2025
         var browserContext = await browser.NewContextAsync(browserContextOptions);
 
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://md-devdays.de/home");
+        await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Session-Übersicht").First.ClickAsync();
+        await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-1").ClickAsync();
+        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
         var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Testautomatisierung für WebApps mit Playwright" }).
+            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
             GetByText("Mehr Infos");
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
