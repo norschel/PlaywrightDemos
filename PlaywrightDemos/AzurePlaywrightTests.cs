@@ -2,19 +2,81 @@ using Azure.Developer.MicrosoftPlaywrightTesting.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+using NUnit.Framework.Interfaces;
+using Microsoft.Playwright.NUnit;
 
-namespace PlaywrightTests;
+namespace PlayDemo;
 
- [SetUpFixture]
-public class AzurePlaywrightTests:PlaywrightServiceNUnit
+[TestFixture]
+public class AzurePlaywrightTests:ContextTest
 {
    
     private static bool _isHeadless = true;
+    private static bool _isEnabledTracing = true;
 
     [Test]
     public async Task MDD_SimpleSmokeTest_NUnit()
     {
-        var playwright = await Playwright.CreateAsync();
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest2_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest3_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest4_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest5_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest6_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest7_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest8_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest9_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    [Test]
+    public async Task MDD_SimpleSmokeTest10_NUnit()
+    {
+        await StartSzenario();
+    }
+
+    private async Task StartSzenario()
+    {
+        var playwright = Playwright;
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
@@ -22,17 +84,20 @@ public class AzurePlaywrightTests:PlaywrightServiceNUnit
                 SlowMo = 2000,
             });
         var browserContext = await browser.NewContextAsync();
+        StartTrace(browserContext);
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://md-devdays.de/home");
+        await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Session-Übersicht").First.ClickAsync();
+        await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-1").ClickAsync();
+
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
+
         var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Testautomatisierung für WebApps mit Playwright" }).
+            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
             GetByText("Mehr Infos");
+
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
         await sessionLink.ClickAsync();
@@ -40,6 +105,7 @@ public class AzurePlaywrightTests:PlaywrightServiceNUnit
         //await page.PauseAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
+        StopTrace(browserContext, "MDD_SimpleSmokeTest_NUnit");
 
         Assert.IsTrue(
             await page.Locator("text=Magdeburg").IsVisibleAsync());
@@ -47,4 +113,48 @@ public class AzurePlaywrightTests:PlaywrightServiceNUnit
         //await page.PauseAsync();
         await browser.CloseAsync();
     }
+
+    #region Helper
+
+    public async void StartTrace(IBrowserContext context)
+    {
+        if (!_isEnabledTracing)
+        {
+            return;
+        }
+
+        await context.Tracing.StartAsync(new TracingStartOptions
+        {
+            Screenshots = true,
+            Snapshots = true,
+            Sources = true
+        });
+    }
+
+    public static void StopTrace(IBrowserContext context, string testName)
+    {
+        if (!_isEnabledTracing)
+        {
+            return;
+        }
+
+        var traceOptions = new TracingStopOptions
+        {
+            Path = testName + "_trace.zip"
+            //Path = "trace.zip"
+        };
+        context.Tracing.StopAsync(traceOptions).Wait();
+
+        var tracePath = Path.Combine(
+                NUnit.Framework.TestContext.CurrentContext.WorkDirectory,
+                $"{testName}_trace.zip",
+                $"{testName}_trace.zip"
+            );
+        NUnit.Framework.TestContext.AddTestAttachment(
+            $"{testName}_trace.zip",
+            $"{testName}_trace.zip"
+        );
+
+    }
+    #endregion
 }

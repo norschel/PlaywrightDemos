@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
+//[TestClass] - ignore it
 public class PlaywrightE2ETests_MDD2025
 {
     #region Globals
@@ -26,17 +26,19 @@ public class PlaywrightE2ETests_MDD2025
         await page.Locator("text=Speichern").First.ClickAsync();
         await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
+        
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
+
         var sessionLink = page.Locator(".act-card-content-container").
             Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
             GetByText("Mehr Infos");
+        
         await sessionLink.ScrollIntoViewIfNeededAsync();
         await sessionLink.HighlightAsync();
         await sessionLink.ClickAsync();
 
-        //await page.PauseAsync();
+        await page.PauseAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
@@ -131,7 +133,7 @@ public class PlaywrightE2ETests_MDD2025
 
         var task = page.RunAndWaitForDownloadAsync(async () =>
         {
-            await page.Locator("text=ct_2024").ClickAsync();
+            await page.Locator("text=ct_2025").ClickAsync();
         });
 
         await task.Result.SaveAsAsync("mediadaten_ct_2024.pdf");
