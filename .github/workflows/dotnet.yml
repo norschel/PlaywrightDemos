@@ -48,7 +48,7 @@ jobs:
             Copy-Item -Path $file.FullName -Destination $destinationPath -Force
         }
     - name: Upload Playwright Diag Data
-      uses: actions/upload-artifact@v3.1.3
+      uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
         # Artifact name
@@ -57,7 +57,7 @@ jobs:
         # The desired behavior if no files are found using the provided path.
         retention-days: 90
     - name: Upload complete Workspace (Error happend)
-      uses: actions/upload-artifact@v3.1.3
+      uses: actions/upload-artifact@v4
       if: ${{ failure() }}
       with:
         # Artifact name
