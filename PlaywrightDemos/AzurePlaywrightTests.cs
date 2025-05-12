@@ -9,7 +9,7 @@ namespace PlaywrightTests;
 public class AzurePlaywrightTests:PlaywrightServiceNUnit
 {
    
-    private static bool _isHeadless = false;
+    private static bool _isHeadless = true;
 
     [Test]
     public async Task MDD_SimpleSmokeTest_NUnit()
