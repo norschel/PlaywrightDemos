@@ -6,7 +6,7 @@ namespace PlayDemo;
 public class PlaywrightE2ETests_MDD2025
 {
     #region Globals
-    static bool _isHeadless = false;
+    static bool _isHeadless = true;
     #endregion
 
     #region SimpleSmokeTest
