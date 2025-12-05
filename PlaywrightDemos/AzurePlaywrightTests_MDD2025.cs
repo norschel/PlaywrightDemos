@@ -8,7 +8,7 @@ using Microsoft.Playwright.NUnit;
 namespace PlayDemo;
 
 //disabled - [TestFixture]
-public class AzurePlaywrightTests:ContextTest
+public class AzurePlaywrightTests_MDD2025:ContextTest
 {
    
     private static bool _isHeadless = true;
