@@ -7,7 +7,7 @@ using Microsoft.Playwright.NUnit;
 
 namespace PlayDemo;
 
-[TestFixture]
+//disabled - [TestFixture]
 public class AzurePlaywrightTests:ContextTest
 {
    

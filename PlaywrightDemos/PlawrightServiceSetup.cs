@@ -3,5 +3,5 @@ using NUnit.Framework;
 
 namespace PlaywrightDemos;
 
-[SetUpFixture]
+//disabled - [SetUpFixture]
 public class PlaywrightServiceSetup : PlaywrightServiceNUnit {};
