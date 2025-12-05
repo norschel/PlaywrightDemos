@@ -2,18 +2,16 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-//[TestClass] - ignore it
-#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
-public class PlaywrightE2ETests_MDD2025
-#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
+[TestClass]
+public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals
-    static bool _isHeadless = true;
+    static bool _isHeadless = false;
     #endregion
 
     #region SimpleSmokeTest
     [TestMethod]
-    public async Task MDD_SimpleSmokeTest()
+    public async Task ITT_SimpleSmokeTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
@@ -24,28 +22,22 @@ public class PlaywrightE2ETests_MDD2025
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
         
-        await page.Locator("text=Playwright").HighlightAsync();
-        await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
 
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
-
+        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=playwright]").HighlightAsync();
+        // use it only for testing or debugging
         await page.PauseAsync();
+        
+        await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.Locator("text=Magdeburg").IsVisibleAsync());
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
         await browser.CloseAsync();
@@ -59,30 +51,28 @@ public class PlaywrightE2ETests_MDD2025
     [DataRow("Webkit")]
     [DataRow("Edge")]
     [DataRow("Chrome")]
-    public async Task MDD_DataDrivenSmokeTest(string BrowserName)
+    public async Task ITT_DataDrivenSmokeTest(string BrowserName)
     {
         var playwright = await Playwright.CreateAsync();
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
-        await page.Locator("text=Playwright").HighlightAsync();
-        await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
+
+        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=playwright]").HighlightAsync();
+        // use it only for testing or debugging
+        await page.PauseAsync();
+        
+        await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.Locator("text=Magdeburg").IsVisibleAsync());
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
         await browser.CloseAsync();
@@ -181,7 +171,7 @@ public class PlaywrightE2ETests_MDD2025
 
     #region DeviceTest
     [TestMethod]
-    public async Task MDD_DeviceTest()
+    public async Task ITT_DeviceTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
@@ -195,26 +185,22 @@ public class PlaywrightE2ETests_MDD2025
         var device = playwright.Devices["iPhone 13 landscape"];
         var browserContext = await browser.NewContextAsync(device);
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
-        await page.Locator("text=Playwright").HighlightAsync();
-        await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
 
-        //await page.PauseAsync();
+        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=playwright]").HighlightAsync();
+        // use it only for testing or debugging
+        await page.PauseAsync();
+        
+        await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.Locator("text=Magdeburg").IsVisibleAsync());
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
         await browser.CloseAsync();
@@ -223,7 +209,7 @@ public class PlaywrightE2ETests_MDD2025
 
     #region VideoTest
     [TestMethod]
-    public async Task MDD_VideoSimpleTest()
+    public async Task ITT_VideoSimpleTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
@@ -241,24 +227,22 @@ public class PlaywrightE2ETests_MDD2025
         var browserContext = await browser.NewContextAsync(browserContextOptions);
 
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
-        await page.Locator("text=Playwright").HighlightAsync();
-        await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "(12.5.) Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
+
+        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=playwright]").HighlightAsync();
+        // use it only for testing or debugging
+        await page.PauseAsync();
+        
+        await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.Locator("text=Magdeburg").IsVisibleAsync());
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
         await browser.CloseAsync();
