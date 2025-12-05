@@ -106,10 +106,10 @@ public class PlaywrightE2ETests_MDD2025
                 return await playwright.Webkit.LaunchAsync(browserOptions);
             case "Edge":
                 browserOptions.Channel = "msedge";
-                return await playwright.Webkit.LaunchAsync(browserOptions);
+                return await playwright.Chromium.LaunchAsync(browserOptions);
             case "Chrome":
                 browserOptions.Channel = "chrome";
-                return await playwright.Webkit.LaunchAsync(browserOptions);
+                return await playwright.Chromium.LaunchAsync(browserOptions);
             default:
                 throw new ArgumentException("Browser not supported");
         }
