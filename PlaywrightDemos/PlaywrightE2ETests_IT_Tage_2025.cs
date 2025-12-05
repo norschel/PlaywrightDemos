@@ -22,7 +22,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        
+
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
 
@@ -30,13 +30,13 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
         //await page.PauseAsync();
-        
+
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
             await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
@@ -54,24 +54,25 @@ public class PlaywrightE2ETests_IT_Tage_2025
     public async Task ITT_DataDrivenSmokeTest(string BrowserName)
     {
         var playwright = await Playwright.CreateAsync();
+
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        
-        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
+
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/" + "#" + BrowserName);
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
 
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
         //await page.PauseAsync();
-        
+
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
             await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
@@ -185,7 +186,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         var device = playwright.Devices["iPhone 13 landscape"];
         var browserContext = await browser.NewContextAsync(device);
         var page = await browserContext.NewPageAsync();
-        
+
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
 
@@ -193,13 +194,13 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
         //await page.PauseAsync();
-        
+
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
             await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
@@ -227,7 +228,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         var browserContext = await browser.NewContextAsync(browserContextOptions);
 
         var page = await browserContext.NewPageAsync();
-        
+
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
 
@@ -235,13 +236,13 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
         //await page.PauseAsync();
-        
+
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         Assert.IsTrue(
-            await page.GetByText("Harald Binkle").First.IsVisibleAsync() & 
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
             await page.GetByText("Nico Orschel").First.IsVisibleAsync());
 
         //await page.PauseAsync();
