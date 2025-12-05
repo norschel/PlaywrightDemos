@@ -29,7 +29,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
-        await page.PauseAsync();
+        //await page.PauseAsync();
         
         await page.Locator("[href*=playwright]").ClickAsync();
 
@@ -64,7 +64,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
-        await page.PauseAsync();
+        //await page.PauseAsync();
         
         await page.Locator("[href*=playwright]").ClickAsync();
 
@@ -192,7 +192,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
-        await page.PauseAsync();
+        //await page.PauseAsync();
         
         await page.Locator("[href*=playwright]").ClickAsync();
 
@@ -234,7 +234,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         // use it only for testing or debugging
-        await page.PauseAsync();
+        //await page.PauseAsync();
         
         await page.Locator("[href*=playwright]").ClickAsync();
 
