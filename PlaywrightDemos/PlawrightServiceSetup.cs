@@ -1,7 +1,14 @@
-using Azure.Developer.MicrosoftPlaywrightTesting.NUnit;
+using Azure.Developer.Playwright.NUnit;
 using NUnit.Framework;
+using Azure.Identity;
 
 namespace PlaywrightDemos;
 
-//disabled - [SetUpFixture]
-public class PlaywrightServiceSetup : PlaywrightServiceNUnit {};
+[SetUpFixture]
+public class PlaywrightServiceNUnitSetup : PlaywrightServiceBrowserNUnit
+{
+    public PlaywrightServiceNUnitSetup() : base(
+        credential: new DefaultAzureCredential()
+    )
+    {}
+}

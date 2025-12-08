@@ -9,7 +9,7 @@ using Azure.Identity;
 namespace PlaywrightDemos;
 
 [Parallelizable(ParallelScope.Self)]
-public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
+public class AzurePlaywrightTests_ITT2025_2:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
     private static bool _isEnabledTracing = true;

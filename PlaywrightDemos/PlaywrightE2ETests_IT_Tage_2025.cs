@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
+//-- [TestClass]
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals

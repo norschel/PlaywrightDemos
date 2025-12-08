@@ -1,14 +1,15 @@
-using Azure.Developer.MicrosoftPlaywrightTesting.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using NUnit.Framework.Interfaces;
 using Microsoft.Playwright.NUnit;
 
-namespace PlayDemo;
+namespace PlaywrightDemos;
 
-//disabled - [TestFixture]
-public class AzurePlaywrightTests_MDD2025:ContextTest
+//disabled because it used an previous Azure Playwright Service instance
+
+/*
+public class AzurePlaywrightTests_MDD2025:PageTest
 {
    
     private static bool _isHeadless = true;
@@ -157,4 +158,4 @@ public class AzurePlaywrightTests_MDD2025:ContextTest
 
     }
     #endregion
-}
+}*/
