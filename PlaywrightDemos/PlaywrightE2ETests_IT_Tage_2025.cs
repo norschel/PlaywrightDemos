@@ -9,7 +9,8 @@ namespace PlayDemo;
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals
-    static bool _isHeadless  = true;
+    static bool _isHeadless = true;
+    static int _slomo = 0; 
     #endregion
 
     #region SimpleSmokeTest
@@ -21,7 +22,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000,
+                SlowMo = _slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -87,7 +88,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         var browserOptions = new BrowserTypeLaunchOptions
         {
             Headless = _isHeadless,
-            SlowMo = 2000
+            SlowMo = _slomo
         };
 
         switch (BrowserName)
@@ -119,7 +120,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -128,8 +129,9 @@ public class PlaywrightE2ETests_IT_Tage_2025
 
         var task = page.RunAndWaitForDownloadAsync(async () =>
         {
-            await page.Locator("text=ct_2025").ClickAsync();
-        });
+            await page.Locator("[href*=ct_RateCard2026]").ClickAsync();
+        }
+        );
 
         await task.Result.SaveAsAsync("mediadaten_ct_2024.pdf");
 
@@ -147,7 +149,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -182,7 +184,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
 
         // execute test on iPhone 13 landscape
@@ -220,7 +222,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
 
         var browserContextOptions = new BrowserNewContextOptions
@@ -263,7 +265,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000,
+                SlowMo = _slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -306,7 +308,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000,
+                SlowMo = _slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -390,7 +392,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
             new BrowserTypeLaunchOptions
             {
                 Headless = _isHeadless,
-                SlowMo = 2000,
+                SlowMo = _slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
