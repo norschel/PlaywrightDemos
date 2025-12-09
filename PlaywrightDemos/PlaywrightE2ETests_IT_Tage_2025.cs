@@ -3,7 +3,9 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-//-- [TestClass]
+[TestClass]
+[TestCategory("MSTest")]
+[TestCategory("CICD")]
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals

@@ -32,7 +32,7 @@ jobs:
     - name: Install missing WebKit deps
       run: npx playwright install-deps webkit
     - name: Test
-      run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal
+      run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD"
     - name: Copy Playwright Diag Data
       if: ${{ always() }}
       shell: pwsh
