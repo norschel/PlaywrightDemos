@@ -9,7 +9,7 @@ namespace PlayDemo;
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals
-    static bool _isHeadless = false;
+    static bool _isHeadless  = true;
     #endregion
 
     #region SimpleSmokeTest

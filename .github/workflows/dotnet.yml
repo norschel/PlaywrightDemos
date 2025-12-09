@@ -27,10 +27,10 @@ jobs:
       run: dotnet restore ${{env.solutionpath}}\\PlayDemo.csproj
     - name: Build
       run: dotnet build ${{env.solutionpath}}\\PlayDemo.csproj --no-restore
-    - name: Install Playwright Browsers
-      run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
     - name: Install missing WebKit deps
       run: npx playwright install-deps webkit
+    - name: Install Playwright Browsers
+      run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
     - name: Test
       run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD"
     - name: Copy Playwright Diag Data
