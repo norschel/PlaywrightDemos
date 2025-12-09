@@ -9,6 +9,7 @@ using Azure.Identity;
 namespace PlaywrightDemos;
 
 [Parallelizable(ParallelScope.Self)]
+[Category("NUnit")]
 public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
@@ -81,8 +82,8 @@ public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = _isHeadless,
-                SlowMo = 2000,
+                Headless = _isHeadless
+                //,SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
         StartTrace(browserContext);

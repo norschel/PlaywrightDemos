@@ -6,7 +6,7 @@ namespace PlaywrightDemos;
 
 [Parallelizable(ParallelScope.Self)]
 [Category("NUnit")]
-public class AzurePlaywrightTests_ITT2025_2:CloudBrowserPageTest
+public class AzurePlaywrightTests_ITT2025_4:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
     private static bool _isEnabledTracing = true;
