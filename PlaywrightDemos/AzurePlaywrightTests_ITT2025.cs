@@ -10,6 +10,7 @@ namespace PlaywrightDemos;
 
 [Parallelizable(ParallelScope.Self)]
 [Category("NUnit")]
+[TestCategory("NUnit")]
 public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
@@ -88,6 +89,7 @@ public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
         var browserContext = await browser.NewContextAsync();
         StartTrace(browserContext);
         var page = await browserContext.NewPageAsync();
+        StartTrace(browserContext);
         
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/" + "#" + BrowserName);
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
@@ -100,6 +102,7 @@ public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
+        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing");
 
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &

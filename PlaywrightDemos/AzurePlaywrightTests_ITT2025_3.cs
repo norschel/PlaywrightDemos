@@ -6,6 +6,7 @@ namespace PlaywrightDemos;
 
 [Parallelizable(ParallelScope.Self)]
 [Category("NUnit")]
+[TestCategory("NUnit")]
 public class AzurePlaywrightTests_ITT2025_3:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
@@ -96,6 +97,7 @@ public class AzurePlaywrightTests_ITT2025_3:CloudBrowserPageTest
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
+        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing_3");
 
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
