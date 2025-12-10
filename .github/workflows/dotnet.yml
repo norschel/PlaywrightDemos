@@ -32,12 +32,16 @@ jobs:
     - name: Install Playwright Browsers
       run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
     - name: Test
-      run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD" --logger "trx;LogFileName=test-results.trx" --logger "nunit;LogFileName=test-results.xml"
+      run: |
+        dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD" \
+          --logger "trx;LogFileName=test-results.trx" \
+          --logger "nunit;LogFileName=test-results.xml"
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
         name: test-results
+        # Test loggers create TestResults directory in the project directory
         path: |
           **/TestResults/**/*.trx
           **/TestResults/**/*.xml
