@@ -32,14 +32,23 @@ jobs:
     - name: Install Playwright Browsers
       run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
     - name: Test
-      run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD"
+      run: dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD" --logger "trx;LogFileName=test-results.trx" --logger "nunit;LogFileName=test-results.xml"
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: ${{ always() }}
+      with:
+        name: test-results
+        path: |
+          **/TestResults/**/*.trx
+          **/TestResults/**/*.xml
+        retention-days: 90
     - name: Copy Playwright Diag Data
       if: ${{ always() }}
       shell: pwsh
-      run:
+      run: |
         $sourceDirectory = "${{github.workspace}}";
         $destinationDirectory = "${{github.workspace}}/PlaywrightDiag";
-        $fileExtensions = @("webm", "png", "jpeg");
+        $fileExtensions = @(".webm", ".png", ".jpeg", ".jpg", ".zip");
         mkdir $destinationDirectory;
         
         $files = Get-ChildItem -Path $sourceDirectory -Recurse | Where-Object { $_.Extension -in $fileExtensions };
@@ -52,7 +61,7 @@ jobs:
       if: ${{ always() }}
       with:
         # Artifact name
-        name: Playwright
+        name: playwright-screenshots-videos-traces
         path: ${{github.workspace}}/PlaywrightDiag
         # The desired behavior if no files are found using the provided path.
         retention-days: 90
