@@ -51,6 +51,19 @@ This project demonstrates various Playwright testing scenarios using C# with bot
 - **Azure Playwright Testing Service** - Cloud-based parallel test execution
 - **Scalable infrastructure** - Run tests across multiple browsers simultaneously
 
+### AI-Assisted Automation
+
+This repository includes GitHub Copilot prompts that demonstrate AI-powered browser automation workflows:
+
+- **[generateImage.prompt.md](.github/prompts/generateImage.prompt.md)** - Automated image generation workflow using Playwright MCP tooling
+  - Scrapes conference website to extract theme and styling information
+  - Navigates to Google Gemini AI
+  - Constructs AI prompts based on gathered context
+  - Generates custom conference presentation images
+  - Automates file downloads
+
+This showcases how Playwright can be integrated with AI tools for complex multi-step automation tasks without writing traditional test code.
+
 ## Project Structure
 
 ```text
