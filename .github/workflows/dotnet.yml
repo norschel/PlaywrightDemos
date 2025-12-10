@@ -14,6 +14,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
     env:
       solutionpath: .\\PlaywrightDemos
 
@@ -36,8 +39,8 @@ jobs:
       run: |
         dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD" \
           --logger "trx;LogFileName=test-results.trx" \
-          --logger "nunit;LogFileName=test-results.xml"
-          --logger "html;logfilename=test-results.html"
+          --logger "nunit;LogFileName=test-results.xml" \
+          --logger "html;logfilename=test-results.html" \
           --logger "console;verbosity=detailed"
     - name: Test Reporter
       uses: dorny/test-reporter@v1.6.0
