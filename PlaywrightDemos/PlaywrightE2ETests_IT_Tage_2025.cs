@@ -654,6 +654,10 @@ public class PlaywrightE2ETests_IT_Tage_2025
             //Path = "trace.zip"
         };
         context.Tracing.StopAsync(traceOptions).Wait();
+        // output trace path for further usage
+        Console.WriteLine($"Trace saved to: {testName}_trace.zip");
+        // output path of current assembly for further usage
+        Console.WriteLine($"Current Directory: {AppContext.BaseDirectory}");
 
         /*var tracePath = Path.Combine(
                 NUnit.Framework.TestContext.CurrentContext.WorkDirectory,
