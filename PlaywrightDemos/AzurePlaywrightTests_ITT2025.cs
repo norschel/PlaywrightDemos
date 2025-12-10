@@ -87,7 +87,6 @@ public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
                 //,SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
-        StartTrace(browserContext);
         var page = await browserContext.NewPageAsync();
         StartTrace(browserContext);
         

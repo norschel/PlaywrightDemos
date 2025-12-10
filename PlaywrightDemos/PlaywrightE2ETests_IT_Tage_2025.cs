@@ -8,7 +8,7 @@ namespace PlayDemo;
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals
-    static bool _isHeadless = false;
+    static bool _isHeadless = true;
     static int _slomo = 2000; 
     static bool _isEnabledTracing = true;
 
@@ -655,15 +655,15 @@ public class PlaywrightE2ETests_IT_Tage_2025
         };
         context.Tracing.StopAsync(traceOptions).Wait();
 
-        var tracePath = Path.Combine(
+        /*var tracePath = Path.Combine(
                 NUnit.Framework.TestContext.CurrentContext.WorkDirectory,
                 $"{testName}_trace.zip",
                 $"{testName}_trace.zip"
             );
-        NUnit.Framework.TestContext.AddTestAttachment(
+        TestContext.AddTestAttachment(
             $"{testName}_trace.zip",
             $"{testName}_trace.zip"
-        );
+        );*/
 
     }
     #endregion
