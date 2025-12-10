@@ -1,4 +1,3 @@
-using Microsoft.Identity.Client;
 using Microsoft.Playwright;
 
 namespace PlayDemo;
@@ -9,8 +8,10 @@ namespace PlayDemo;
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals
-    static bool _isHeadless = true;
-    static int _slomo = 0; 
+    static bool _isHeadless = false;
+    static int _slomo = 2000; 
+    static bool _isEnabledTracing = true;
+
     #endregion
 
     #region SimpleSmokeTest
@@ -38,6 +39,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
+        await page.GetByText("Harald Binkle").First.ScrollIntoViewIfNeededAsync();
 
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
@@ -74,7 +76,7 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
-
+        
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
             await page.GetByText("Nico Orschel").First.IsVisibleAsync());
@@ -245,6 +247,44 @@ public class PlaywrightE2ETests_IT_Tage_2025
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
+
+        Assert.IsTrue(
+            await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
+            await page.GetByText("Nico Orschel").First.IsVisibleAsync());
+
+        //await page.PauseAsync();
+        await browser.CloseAsync();
+    }
+    #endregion
+
+    #region Tracing
+     [TestMethod]
+    public async Task ITT_SimpleSmokeTest_Tracing()
+    {
+        var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions
+            {
+                Headless = _isHeadless,
+                SlowMo = _slomo,
+            });
+        var browserContext = await browser.NewContextAsync();
+        StartTrace(browserContext);
+        var page = await browserContext.NewPageAsync();
+
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/");
+        await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
+
+        await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=playwright]").HighlightAsync();
+        // use it only for testing or debugging
+        //await page.PauseAsync();
+
+        await page.Locator("[href*=playwright]").ClickAsync();
+
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
+        await page.GetByText("Harald Binkle").First.ScrollIntoViewIfNeededAsync();
+        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing");
 
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
@@ -581,6 +621,50 @@ public class PlaywrightE2ETests_IT_Tage_2025
 
         //await page.PauseAsync();
         await browser.CloseAsync();
+    }
+    #endregion
+
+    #region Tracing Helper
+
+    public async void StartTrace(IBrowserContext context)
+    {
+        if (!_isEnabledTracing)
+        {
+            return;
+        }
+
+        await context.Tracing.StartAsync(new TracingStartOptions
+        {
+            Screenshots = true,
+            Snapshots = true,
+            Sources = true
+        });
+    }
+
+    public static void StopTrace(IBrowserContext context, string testName)
+    {
+        if (!_isEnabledTracing)
+        {
+            return;
+        }
+
+        var traceOptions = new TracingStopOptions
+        {
+            Path = testName + "_trace.zip"
+            //Path = "trace.zip"
+        };
+        context.Tracing.StopAsync(traceOptions).Wait();
+
+        var tracePath = Path.Combine(
+                NUnit.Framework.TestContext.CurrentContext.WorkDirectory,
+                $"{testName}_trace.zip",
+                $"{testName}_trace.zip"
+            );
+        NUnit.Framework.TestContext.AddTestAttachment(
+            $"{testName}_trace.zip",
+            $"{testName}_trace.zip"
+        );
+
     }
     #endregion
 }
