@@ -53,7 +53,7 @@ This project demonstrates various Playwright testing scenarios using C# with bot
 
 ### AI-Assisted Automation
 
-This repository includes GitHub Copilot prompts that demonstrate AI-powered browser automation workflows:
+This repository includes GitHub Copilot prompts that demonstrate AI-powered browser automation workflows (by @harrybin):
 
 - **[generateImage.prompt.md](.github/prompts/generateImage.prompt.md)** - Automated image generation workflow using Playwright MCP tooling
   - Scrapes conference website to extract theme and styling information
