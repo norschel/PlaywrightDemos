@@ -31,11 +31,21 @@ jobs:
       run: npx playwright install-deps webkit
     - name: Install Playwright Browsers
       run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
+
     - name: Test
       run: |
         dotnet test ${{env.solutionpath}}\\PlayDemo.csproj --no-build --verbosity normal --filter "TestCategory=CICD" \
           --logger "trx;LogFileName=test-results.trx" \
           --logger "nunit;LogFileName=test-results.xml"
+          --logger "html;logfilename=test-results.html"
+          --logger "console;verbosity=detailed"
+    - name: Test Reporter
+      uses: dorny/test-reporter@v1.6.0
+      with:
+        name: test
+        reporter: dotnet-trx
+        path: '**/*.trx'
+      if: ${{ always() }}
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       if: ${{ always() }}
@@ -65,7 +75,7 @@ jobs:
       if: ${{ always() }}
       with:
         # Artifact name
-        name: playwright-screenshots-videos-traces
+        name: playwright-diagnostics
         path: ${{github.workspace}}/PlaywrightDiag
         # The desired behavior if no files are found using the provided path.
         retention-days: 90
