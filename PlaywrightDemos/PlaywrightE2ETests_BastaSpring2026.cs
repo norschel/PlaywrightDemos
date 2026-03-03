@@ -362,7 +362,7 @@ public class BastaSpring2026_Demos
     #region Route Advanced
 
     [TestMethod]
-    public async Task ITT_NetworkRequest_FullTest()
+    public async Task BastaSpring2026_NetworkRequest_FullTest()
     {
         var playwright = await Playwright.CreateAsync();
 
