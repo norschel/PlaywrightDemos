@@ -538,7 +538,7 @@ public class BastaSpring2026_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta_spring_2026_3.png" });
 
-        await page.Locator("[href*=speaker/harald-binkle]").ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=harald-binkle]").ScrollIntoViewIfNeededAsync();
 
         await page.EvaluateAsync(@"
             () => {
@@ -749,7 +749,8 @@ public class BastaSpring2026_Demos
                 draw();
             }
         ");
-
+        
+        await page.PauseAsync();
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
