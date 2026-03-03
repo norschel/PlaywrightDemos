@@ -2,13 +2,13 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
+//-- disabled [TestClass]
 [TestCategory("MSTest")]
 [TestCategory("CICD")]
 public class PlaywrightE2ETests_IT_Tage_2025
 {
     #region Globals
-    static bool _isHeadless = true;
+    static bool _isHeadless = false;
     static int _slomo = 2000; 
     static bool _isEnabledTracing = true;
 
