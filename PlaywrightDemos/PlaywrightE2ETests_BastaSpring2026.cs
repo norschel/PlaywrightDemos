@@ -67,7 +67,7 @@ public class BastaSpring2026_Demos
 
     #region Video
     [TestMethod]
-    public async Task Basta2024_Video_SimpleSmokeTest()
+    public async Task BastaSpring2026_Video_SimpleSmokeTest()
     {
         var playwright = await Playwright.CreateAsync();
 
