@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Playwright;
 
 namespace PlaywrightDemos;
@@ -10,7 +9,9 @@ public class BastaSpring2026_Demos
 {
     #region Globals
     static bool _isHeadless = false;
+    static int _slomo = 2000;
     static bool _isEnabledTracing = true;
+
     #endregion
 
     //playwright.Selectors.SetTestIdAttribute("id");
@@ -20,14 +21,14 @@ public class BastaSpring2026_Demos
 
     #region SimpleSmokeTest
     [TestMethod]
-    public async Task Basta2024_SimpleSmokeTest()
+    public async Task BastaSpring2026_SimpleSmokeTest()
     {
         var playwright = await Playwright.CreateAsync();
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = _isHeadless,
-            SlowMo = 2000
+            SlowMo = _slomo,
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
@@ -35,26 +36,27 @@ public class BastaSpring2026_Demos
         StartTrace(context);
 
         var page = await context.NewPageAsync();
-        await page.GotoAsync("https://basta.net/mainz/");
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2024_1.png" });
+        await page.GotoAsync("https://basta.net/frankfurt/");
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta_spring_2026_1.png" });
         if (await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).IsVisibleAsync())
         {
             await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
         }
 
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2024_2.png" });
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta_spring_2026_2.png" });
+        await page.Locator("body").PressAsync("Escape");
         await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
         await page.Locator("body").PressAsync("Escape");
 
-        await page.Locator("[href*=Day2]").First.ScrollIntoViewIfNeededAsync();
-        await page.Locator("[href*=Day2]").First.HighlightAsync();
-        await page.Locator("[href*=Day2]").First.ClickAsync();
+        await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
+        await page.Locator("[href*=Day3]").First.HighlightAsync();
+        await page.Locator("[href*=Day3]").First.ClickAsync();
 
         await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
         await page.Locator("[href*=playwright]").HighlightAsync();
         await page.Locator("[href*=playwright]").ClickAsync();
 
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2024_3.png" });
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta_spring_2026_3.png" });
 
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
@@ -293,7 +295,7 @@ public class BastaSpring2026_Demos
 
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        
+
         await page.RouteAsync("**/*.{png,jpg,jpeg,svg}*", route => route.FulfillAsync(new()
         {
             Status = 404,
@@ -313,45 +315,45 @@ public class BastaSpring2026_Demos
     }
     #endregion
 
-#region Route Advanced
-//await page.RouteAsync("**/*.png", route => route.FulfillAsync(new ()
-/*{
-    Status = 404,
-    ContentType = "text/plain",
-    Body = "Not Found!"
-}));*/
+    #region Route Advanced
+    //await page.RouteAsync("**/*.png", route => route.FulfillAsync(new ()
+    /*{
+        Status = 404,
+        ContentType = "text/plain",
+        Body = "Not Found!"
+    }));*/
 
-/*await page.RouteAsync("https://basta.net/mediadaten/jobs", async route =>
-{
-    var response = await route.FetchAsync();
-    await route.FulfillAsync(new RouteFulfillOptions
+    /*await page.RouteAsync("https://basta.net/mediadaten/jobs", async route =>
     {
-        Response = response,
-        Headers = new Dictionary<string, string>(response.Headers)
+        var response = await route.FetchAsync();
+        await route.FulfillAsync(new RouteFulfillOptions
         {
-            ["Content-Disposition"] = "attachment"
-            ,["Content-Type"] = "application/binary"
+            Response = response,
+            Headers = new Dictionary<string, string>(response.Headers)
+            {
+                ["Content-Disposition"] = "attachment"
+                ,["Content-Type"] = "application/binary"
+            }
+        });
+    });*/
+    #endregion
+
+    #region Helper
+
+    public async void StartTrace(IBrowserContext context)
+    {
+        if (!_isEnabledTracing)
+        {
+            return;
         }
-    });
-});*/
-#endregion
 
-#region Helper
-
-public async void StartTrace(IBrowserContext context)
-{
-    if (!_isEnabledTracing)
-    {
-        return;
+        await context.Tracing.StartAsync(new TracingStartOptions
+        {
+            Screenshots = true,
+            Snapshots = true,
+            Sources = true
+        });
     }
-
-    await context.Tracing.StartAsync(new TracingStartOptions
-    {
-        Screenshots = true,
-        Snapshots = true,
-        Sources = true
-    });
-}
 
     public static void StopTrace(IBrowserContext context, string testName)
     {
