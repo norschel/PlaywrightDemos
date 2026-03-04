@@ -50,7 +50,7 @@ jobs:
         path: '**/*.trx'
       if: ${{ always() }}
     - name: Upload Test Results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: ${{ always() }}
       with:
         name: test-results
@@ -74,7 +74,7 @@ jobs:
             Copy-Item -Path $file.FullName -Destination $destinationPath -Force
         }
     - name: Upload Playwright Diag Data
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: ${{ always() }}
       with:
         # Artifact name
@@ -83,7 +83,7 @@ jobs:
         # The desired behavior if no files are found using the provided path.
         retention-days: 90
     - name: Upload complete Workspace (Error happend)
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: ${{ failure() }}
       with:
         # Artifact name
