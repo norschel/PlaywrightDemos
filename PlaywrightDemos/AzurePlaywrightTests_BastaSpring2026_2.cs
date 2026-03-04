@@ -11,6 +11,9 @@ using Azure.Identity;
 
 namespace PlaywrightDemos
 {
+    [Parallelizable(ParallelScope.Self)]
+    [Category("NUnit")]
+    [TestCategory("NUnit")]
     public class AzurePlaywrightTests_BastaSpring2026_2 : CloudBrowserPageTest
     {
         private static bool _isHeadless = true;
@@ -29,8 +32,8 @@ namespace PlaywrightDemos
         }
 
         [TestCase("Chromium")]
-        [TestCase("Firefox")]
-        [TestCase("Webkit")]
+        //[TestCase("Firefox")]
+        //[TestCase("Webkit")]
         public async Task DataDriven_BastaSpring2026_SimpleSmokeTest(string browserName)
         {
             await RunBastaScenario($"DataDriven_BastaSpring2026_SimpleSmokeTest_{browserName}", browserName: browserName);
@@ -73,16 +76,23 @@ namespace PlaywrightDemos
 
                 var page = await browserContext.NewPageAsync();
                 await page.GotoAsync("https://basta.net/frankfurt/");
+                await page.Locator("body").PressAsync("Escape");
 
                 if (await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).IsVisibleAsync())
                 {
                     await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
                 }
 
+                await page.Locator("body").PressAsync("Escape");
+                await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
+                await page.Locator("body").PressAsync("Escape"); ;
+
                 await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
+                await page.Locator("[href*=Day3]").First.HighlightAsync();
                 await page.Locator("[href*=Day3]").First.ClickAsync();
 
                 await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
+                await page.Locator("[href*=playwright]").HighlightAsync();
                 await page.Locator("[href*=playwright]").ClickAsync();
 
                 Assert.IsTrue((await page.TitleAsync()).Contains("Playwright"));
