@@ -33,7 +33,7 @@ jobs:
     - name: Install missing WebKit deps
       run: npx playwright install-deps webkit
     - name: Install Playwright Browsers
-      run: ./PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
+      run: ./PlaywrightDemos/bin/Debug/net10.0/playwright.ps1 install
 
     - name: Test
       run: |
