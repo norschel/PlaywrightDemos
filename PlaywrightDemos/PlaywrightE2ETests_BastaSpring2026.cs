@@ -8,7 +8,7 @@ namespace PlaywrightDemos;
 public class BastaSpring2026_Demos
 {
     #region Globals
-    static bool _isHeadless = false;
+    static bool _isHeadless = true;
     static int _slomo = 2000;
     static bool _isEnabledTracing = true;
     static bool localDemoMode = false;
