@@ -43,7 +43,7 @@ jobs:
           --logger "html;logfilename=test-results.html" \
           --logger "console;verbosity=detailed"
     - name: Test Reporter
-      uses: dorny/test-reporter@v1.6.0
+      uses: dorny/test-reporter@v2.6.0
       with:
         name: test
         reporter: dotnet-trx
