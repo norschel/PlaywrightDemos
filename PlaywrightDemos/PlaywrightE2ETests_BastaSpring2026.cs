@@ -115,7 +115,7 @@ public class BastaSpring2026_Demos
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
-        StopTrace(context, "BastaSpring2026_SimpleSmokeTest");
+        StopTrace(context, "BastaSpring2026_Video_SimpleSmokeTest");
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -223,7 +223,7 @@ public class BastaSpring2026_Demos
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta_spring_2026_3.png" });
 
         Assert.Contains("Playwright", page.TitleAsync().Result);
-        StopTrace(context, "BastaSpring2026_SimpleSmokeTest");
+        StopTrace(context, "DataDriven_BastaSpring2026_SimpleSmokeTest");
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -298,7 +298,7 @@ public class BastaSpring2026_Demos
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta_spring_2026_3.png" });
 
         Assert.Contains("Playwright", page.TitleAsync().Result);
-        StopTrace(context, "BastaSpring2026_SimpleSmokeTest");
+        StopTrace(context, "BastaSpring2026_DeviceTest_SmokeTest");
 
         await context.CloseAsync();
         await browser.CloseAsync();
@@ -355,7 +355,7 @@ public class BastaSpring2026_Demos
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
-        StopTrace(context, "BastaSpring2026_SimpleSmokeTest");
+        StopTrace(context, "BastaSpring2026_Playwright_RouteBlockTest");
     }
     #endregion
 
@@ -451,7 +451,7 @@ public class BastaSpring2026_Demos
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
-        StopTrace(context, "BastaSpring2026_SimpleSmokeTest");
+        StopTrace(context, "BastaSpring2026_NetworkRequest_FullTest");
     }
 
     [TestMethod]
@@ -754,7 +754,7 @@ public class BastaSpring2026_Demos
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
-        StopTrace(context, "BastaSpring2026_SimpleSmokeTest");
+        StopTrace(context, "BastaSpring2026_NetworkRequest_FullTest_EasternTheme");
     }
 
     //await page.RouteAsync("**/*.png", route => route.FulfillAsync(new ()
