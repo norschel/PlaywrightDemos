@@ -5,7 +5,9 @@ namespace PlayDemo;
 //-- disabled [TestClass]
 [TestCategory("MSTest")]
 [TestCategory("CICD")]
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class PlaywrightE2ETests_IT_Tage_2025
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     #region Globals
     static bool _isHeadless = false;

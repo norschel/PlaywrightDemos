@@ -3,7 +3,9 @@ using Microsoft.Playwright;
 namespace demo123;
 
 //[TestClass] - Disabled for now
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class DDC2023_Demos
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     //playwright.Selectors.SetTestIdAttribute("id");
 
@@ -151,7 +153,6 @@ public class DDC2023_Demos
 
     #region DataDriven
     [TestMethod]
-    [DataTestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]

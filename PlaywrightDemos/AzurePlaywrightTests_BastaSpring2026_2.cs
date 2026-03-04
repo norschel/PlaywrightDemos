@@ -11,7 +11,7 @@ using Azure.Identity;
 
 namespace PlaywrightDemos
 {
-    public class AzurePlaywrightTests_BastaSpring2026 : CloudBrowserPageTest
+    public class AzurePlaywrightTests_BastaSpring2026_2 : CloudBrowserPageTest
     {
         private static bool _isHeadless = true;
         private static bool _isEnabledTracing = true;

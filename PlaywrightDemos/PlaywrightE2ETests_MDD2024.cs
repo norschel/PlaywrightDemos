@@ -3,7 +3,9 @@ using Microsoft.Playwright;
 namespace PlayDemo;
 
 //[TestClass] - Tests disabled
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class PlaywrightE2ETests_MDD2024
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     #region Globals
     static bool _isHeadless = true;
@@ -49,7 +51,6 @@ public class PlaywrightE2ETests_MDD2024
     #endregion
 
     #region DataDrivenSmokeTest
-    [DataTestMethod]
     [TestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]

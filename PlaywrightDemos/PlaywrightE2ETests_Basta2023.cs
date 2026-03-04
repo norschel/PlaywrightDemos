@@ -4,7 +4,9 @@ using Microsoft.Playwright;
 namespace demo123;
 
 //[TestClass] - Disabled Tests
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class Basta2023_Demos
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     //playwright.Selectors.SetTestIdAttribute("id");
 
@@ -49,7 +51,7 @@ public class Basta2023_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023_3.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
 
         await browser.CloseAsync();
     }
@@ -95,7 +97,7 @@ public class Basta2023_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -166,7 +168,6 @@ public class Basta2023_Demos
 
     #region DataDriven
     [TestMethod]
-    [DataTestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]
@@ -198,7 +199,7 @@ public class Basta2023_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -270,7 +271,7 @@ public class Basta2023_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         await context.CloseAsync();
         await browser.CloseAsync();
     }

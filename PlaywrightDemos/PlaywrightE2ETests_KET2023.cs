@@ -3,7 +3,9 @@ using Microsoft.Playwright;
 namespace PlayDemo;
 
 //[TestClass] - Disabled Tests
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class PlaywrightE2ETests_KET2023
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     #region SimpleSmokeTest
     [TestMethod]
@@ -26,7 +28,7 @@ public class PlaywrightE2ETests_KET2023
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         var title = await page.TitleAsync();
-        Assert.IsTrue(title.Contains("Playwright"));
+        Assert.Contains("Playwright", title);
         await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         //await page.PauseAsync();
@@ -35,7 +37,7 @@ public class PlaywrightE2ETests_KET2023
     #endregion
 
     #region DataDrivenSmokeTest
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]
@@ -54,7 +56,7 @@ public class PlaywrightE2ETests_KET2023
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         var title = await page.TitleAsync();
-        Assert.IsTrue(title.Contains("Playwright"));
+        Assert.Contains("Playwright", title);
         await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         //await page.PauseAsync();
@@ -138,7 +140,7 @@ public class PlaywrightE2ETests_KET2023
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         var title = await page.TitleAsync();
-        Assert.IsTrue(title.Contains("Playwright"));
+        Assert.Contains("Playwright", title);
         await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         //await page.PauseAsync();
@@ -174,7 +176,7 @@ public class PlaywrightE2ETests_KET2023
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         var title = await page.TitleAsync();
-        Assert.IsTrue(title.Contains("Playwright"));
+        Assert.Contains("Playwright", title);
         await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         await browserContext.CloseAsync();

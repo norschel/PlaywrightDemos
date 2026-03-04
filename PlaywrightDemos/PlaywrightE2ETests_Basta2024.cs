@@ -4,7 +4,9 @@ using Microsoft.Playwright;
 namespace demo123;
 
 //[TestClass] - ignored
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class Basta2024_Demos
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     #region Globals
     static bool _isHeadless = false;
@@ -54,7 +56,7 @@ public class Basta2024_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2024_3.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
         Basta2024_Demos.StopTrace(context, "Basta2024_SimpleSmokeTest");
@@ -101,7 +103,7 @@ public class Basta2024_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2024.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -172,7 +174,6 @@ public class Basta2024_Demos
 
     #region DataDriven
     [TestMethod]
-    [DataTestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]
@@ -202,7 +203,7 @@ public class Basta2024_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2024.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         await context.CloseAsync();
         await browser.CloseAsync();
     }
@@ -271,7 +272,7 @@ public class Basta2024_Demos
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshot_basta2023.png" });
 
-        Assert.IsTrue(page.TitleAsync().Result.Contains("Playwright"));
+        Assert.Contains("Playwright", page.TitleAsync().Result);
         await context.CloseAsync();
         await browser.CloseAsync();
     }
