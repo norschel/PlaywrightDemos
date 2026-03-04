@@ -8,7 +8,7 @@ This project demonstrates various Playwright testing scenarios using C# with bot
 
 ## Technologies
 
-- **.NET 9.0** - Target framework
+- **.NET 10.0** - Target framework
 - **Playwright** - Browser automation framework
 - **MSTest** - Primary testing framework
 - **NUnit** - Alternative testing framework
@@ -133,7 +133,7 @@ This repository includes demo code from the following conferences:
 - **IT-Tage 2025** - Latest demos with Azure Playwright Testing
 - **MDD (Madgeburger Developer Days) 2024/2025**
 - **DDC (.NET Developer Conference Cologne) 2023/2024**
-- **BASTA! 2023/2024**
+- **BASTA! 2023/2024/Spring 2026**
 - **KET (Karlsruher Entwicklertage) 2023**
 - **WDC (Web Developer Conference) 2023**
 
