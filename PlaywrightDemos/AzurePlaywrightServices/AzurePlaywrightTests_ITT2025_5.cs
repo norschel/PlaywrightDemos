@@ -4,9 +4,9 @@ using Assert = NUnit.Framework.Assert;
 
 namespace PlaywrightDemos;
 
-[Parallelizable(ParallelScope.Self)]
-[Category("NUnit")]
-[TestCategory("NUnit")]
+//[Parallelizable(ParallelScope.Self)]
+//[Category("NUnit")]
+//[TestCategory("NUnit")]
 public class AzurePlaywrightTests_ITT2025_5:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;

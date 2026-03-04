@@ -1,17 +1,13 @@
 using Microsoft.Playwright;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using NUnit.Framework.Interfaces;
-using Microsoft.Playwright.NUnit;
-using Azure.Developer.Playwright;
-using Azure.Identity;
 
 namespace PlaywrightDemos;
 
-[Parallelizable(ParallelScope.Self)]
-[Category("NUnit")]
-[TestCategory("NUnit")]
-public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
+//[Parallelizable(ParallelScope.Self)]
+//[Category("NUnit")]
+//[TestCategory("NUnit")]
+public class AzurePlaywrightTests_ITT2025_4:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
     private static bool _isEnabledTracing = true;
@@ -87,8 +83,8 @@ public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
                 //,SlowMo = 2000
             });
         var browserContext = await browser.NewContextAsync();
-        var page = await browserContext.NewPageAsync();
         StartTrace(browserContext);
+        var page = await browserContext.NewPageAsync();
         
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/" + "#" + BrowserName);
         await page.GotoAsync("https://www.ittage.informatik-aktuell.de/programm.html");
@@ -101,7 +97,7 @@ public class AzurePlaywrightTests_ITT2025:CloudBrowserPageTest
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
-        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing");
+        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing_4");
 
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &

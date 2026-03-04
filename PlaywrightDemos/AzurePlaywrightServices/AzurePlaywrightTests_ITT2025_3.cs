@@ -4,10 +4,10 @@ using Assert = NUnit.Framework.Assert;
 
 namespace PlaywrightDemos;
 
-[Parallelizable(ParallelScope.Self)]
-[Category("NUnit")]
-[TestCategory("NUnit")]
-public class AzurePlaywrightTests_ITT2025_4:CloudBrowserPageTest
+//[Parallelizable(ParallelScope.Self)]
+//[Category("NUnit")]
+//[TestCategory("NUnit")]
+public class AzurePlaywrightTests_ITT2025_3:CloudBrowserPageTest
 {
     private static bool _isHeadless = true;
     private static bool _isEnabledTracing = true;
@@ -97,7 +97,7 @@ public class AzurePlaywrightTests_ITT2025_4:CloudBrowserPageTest
         await page.Locator("[href*=playwright]").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
-        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing_4");
+        StopTrace(browserContext, "ITT_SimpleSmokeTest_Tracing_3");
 
         Assert.IsTrue(
             await page.GetByText("Harald Binkle").First.IsVisibleAsync() &
