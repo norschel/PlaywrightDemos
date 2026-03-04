@@ -11,6 +11,7 @@ public class BastaSpring2026_Demos
     static bool _isHeadless = false;
     static int _slomo = 2000;
     static bool _isEnabledTracing = true;
+    static bool localDemoMode = false;
 
     #endregion
 
@@ -748,8 +749,12 @@ public class BastaSpring2026_Demos
                 draw();
             }
         ");
-        
-        await page.PauseAsync();
+
+        if (localDemoMode)
+        {
+            await page.PauseAsync();
+        }
+
         Assert.Contains("Playwright", page.TitleAsync().Result);
         //await context.CloseAsync();
         //await browser.CloseAsync();
