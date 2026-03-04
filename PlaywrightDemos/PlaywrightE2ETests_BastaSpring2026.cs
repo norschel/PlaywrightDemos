@@ -187,7 +187,6 @@ public class BastaSpring2026_Demos
 
     #region DataDriven
     [TestMethod]
-    [DataTestMethod]
     [DataRow("Chromium")]
     [DataRow("Firefox")]
     [DataRow("Webkit")]
