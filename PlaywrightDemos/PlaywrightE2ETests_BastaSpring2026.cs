@@ -11,7 +11,7 @@ public class BastaSpring2026_Demos
     static bool _isHeadless = true;
     static int _slomo = 2000;
     static bool _isEnabledTracing = true;
-    static bool localDemoMode = false;
+    static bool localDemoMode = true;
 
     #endregion
 
@@ -86,7 +86,6 @@ public class BastaSpring2026_Demos
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
         var context = await browser.NewContextAsync(browserContextOptions);
-        StartTrace(context);
 
         StartTrace(context);
 
