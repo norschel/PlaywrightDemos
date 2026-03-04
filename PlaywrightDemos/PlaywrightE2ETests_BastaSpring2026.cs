@@ -11,7 +11,7 @@ public class BastaSpring2026_Demos
     static bool _isHeadless = true;
     static int _slomo = 2000;
     static bool _isEnabledTracing = true;
-    static bool localDemoMode = true;
+    static bool localDemoMode = false;
 
     #endregion
 
@@ -469,6 +469,30 @@ public class BastaSpring2026_Demos
         StartTrace(context);
 
         var page = await context.NewPageAsync();
+
+        // https://basta.net/wp-content/uploads/2025/06/BASTA_FRA26_Website_Redesign_Header_Desktop.jpg?x33719
+        await page.RouteAsync("**/BASTA_FRA26_Website_Redesign_Header_Desktop.jpg*", async route =>
+       {
+           var response = await route.FetchAsync();
+
+           var body = await response.BodyAsync();
+           // read local image and replace the response body
+
+           var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
+           var filePath = Path.Combine(assemblyDir, "testdaten", "ostern_stage.jpg");
+           body = await File.ReadAllBytesAsync(filePath);
+
+           await route.FulfillAsync(new RouteFulfillOptions
+           {
+               Response = response,
+               BodyBytes = body,
+               Headers = new Dictionary<string, string>(response.Headers)
+               {
+                   ["Content-Type"] = "application/image-jpeg",
+               }
+           });
+       });
+
         //https://s3.eu-west-1.amazonaws.com/redsys-prod/authors/4ddb6e4660f8176e9ec77c01/images/avatarSquareSmall_xxx_1770985900891binkleharaldwp1024x102428129.jpg
         await page.RouteAsync("**/*binkleharald*.jpg", async route =>
             {
@@ -491,6 +515,7 @@ public class BastaSpring2026_Demos
                     }
                 });
             });
+
         //https://s3.eu-west-1.amazonaws.com/redsys-prod/authors/61e68dfa5642af001d4a6f30/images/avatarSquareSmall_xxx_orschel_nico_ek_1557151950696.jpg"
         await page.RouteAsync("**/*orschel_nico*.jpg", async route =>
         {
@@ -806,10 +831,10 @@ public class BastaSpring2026_Demos
             return;
         }
 
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH_mm");
         var traceOptions = new TracingStopOptions
         {
-            Path = testName + "_trace.zip"
-            //Path = "trace.zip"
+            Path = $"{timestamp}_{testName}_trace.zip"
         };
         context.Tracing.StopAsync(traceOptions).Wait();
     }
