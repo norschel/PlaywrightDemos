@@ -23,8 +23,9 @@ jobs:
 
       - name: Run Playwright tests in Docker container
         run: |
+          mkdir -p ${{ github.workspace }}/TestResults
           docker run --rm \
-            -v ${{ github.workspace }}/TestResults:/app/TestResults \
+            -v ${{ github.workspace }}/TestResults:/app/PlaywrightDemos/TestResults \
             --name playwright-test-run \
             playwright-tests
 
@@ -34,7 +35,7 @@ jobs:
         with:
           name: docker-test-results
           reporter: dotnet-trx
-          path: '**/TestResults/**/*.trx'
+          path: 'TestResults/**/*.trx'
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
@@ -42,6 +43,6 @@ jobs:
         with:
           name: docker-test-results
           path: |
-            **/TestResults/**/*.trx
-            **/TestResults/**/*.xml
+            TestResults/**/*.trx
+            TestResults/**/*.xml
           retention-days: 90
