@@ -1,0 +1,48 @@
+# This workflow builds the Docker image containing the Playwright tests and runs them inside the container.
+name: Docker_Playwright_Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t playwright-tests .
+
+      - name: Run Playwright tests in Docker container
+        run: |
+          mkdir -p ${{ github.workspace }}/TestResults
+          docker run --rm \
+            -v ${{ github.workspace }}/TestResults:/app/PlaywrightDemos/TestResults \
+            --name playwright-test-run \
+            playwright-tests
+
+      - name: Test Reporter
+        uses: dorny/test-reporter@v3.0.0
+        if: ${{ always() }}
+        with:
+          name: docker-test-results
+          reporter: dotnet-trx
+          path: 'TestResults/**/*.trx'
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: docker-test-results
+          path: |
+            TestResults/**/*.trx
+            TestResults/**/*.xml
+          retention-days: 90
