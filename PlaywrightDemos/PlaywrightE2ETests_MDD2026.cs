@@ -14,6 +14,8 @@ public class PlaywrightE2ETests_MDD2026
     static bool localDemoMode = false;
     static bool IsHeadless => IsRunningOnBuildServer() || _isHeadless;
 
+    static int _slomo = 2000;
+
     static bool IsRunningOnBuildServer() =>
         Environment.GetEnvironmentVariable("CI") == "true" ||
         Environment.GetEnvironmentVariable("TF_BUILD") == "True" ||
@@ -144,8 +146,8 @@ public class PlaywrightE2ETests_MDD2026
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = IsHeadless,
-                SlowMo = 2000
+                Headless = _isHeadless,
+                SlowMo = _slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -154,15 +156,15 @@ public class PlaywrightE2ETests_MDD2026
 
         var task = page.RunAndWaitForDownloadAsync(async () =>
         {
-            await page.Locator("text=ct_2025").ClickAsync();
-        });
+            await page.Locator("[href*=ct_RateCard2026]").ClickAsync();
+        }
+        );
 
-        await task.Result.SaveAsAsync("mediadaten_ct_2024.pdf");
+        await task.Result.SaveAsAsync("mediadaten_ct_2026.pdf");
 
-        Assert.IsTrue(File.Exists("mediadaten_ct_2024.pdf"));
+        Assert.IsTrue(File.Exists("mediadaten_ct_2026.pdf"));
 
         await browser.CloseAsync();
-
     }
 
     [TestMethod]
