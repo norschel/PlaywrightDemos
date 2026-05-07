@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using Ignore = NUnit.Framework.IgnoreAttribute;
 using NUnit.Framework.Interfaces;
 using Microsoft.Playwright.NUnit;
 using Azure.Developer.Playwright;
@@ -12,33 +11,35 @@ using Azure.Identity;
 
 namespace PlaywrightDemos
 {
-    //[Parallelizable(ParallelScope.Self)]
-    public class AzurePlaywrightTests_BastaSpring2026 : CloudBrowserPageTest
+    [Parallelizable(ParallelScope.Self)]
+    [Category("NUnit")]
+    [TestCategory("NUnit")]
+    public class AzurePlaywrightTests_MDD2026_3 : CloudBrowserPageTest
     {
         private static bool _isHeadless = true;
         private static bool _isEnabledTracing = true;
 
         [Test]
-        public async Task BastaSpring2026_SimpleSmokeTest()
+        public async Task MDD2026_SimpleSmokeTest()
         {
-            await RunBastaScenario("BastaSpring2026_SimpleSmokeTest");
+            await RunMDDScenario("MDD2026_SimpleSmokeTest");
         }
 
         [Test]
-        public async Task BastaSpring2026_Video_SimpleSmokeTest()
+        public async Task MDD2026_Video_SimpleSmokeTest()
         {
-            await RunBastaScenario("BastaSpring2026_Video_SimpleSmokeTest", recordVideo: true);
+            await RunMDDScenario("MDD2026_Video_SimpleSmokeTest", recordVideo: true);
         }
 
         [TestCase("Chromium")]
         //[TestCase("Firefox")]
         //[TestCase("Webkit")]
-        public async Task DataDriven_BastaSpring2026_SimpleSmokeTest(string browserName)
+        public async Task DataDriven_MDD2026_SimpleSmokeTest(string browserName)
         {
-            await RunBastaScenario($"DataDriven_BastaSpring2026_SimpleSmokeTest_{browserName}", browserName: browserName);
+            await RunMDDScenario($"DataDriven_MDD2026_SimpleSmokeTest_{browserName}", browserName: browserName);
         }
 
-        private async Task RunBastaScenario(string testName, string browserName = "chrome", bool recordVideo = false)
+        private async Task RunMDDScenario(string testName, string browserName = "chrome", bool recordVideo = false)
         {
             var playwright = this.Playwright;
 
@@ -74,26 +75,24 @@ namespace PlaywrightDemos
                 StartTrace(browserContext);
 
                 var page = await browserContext.NewPageAsync();
-                await page.GotoAsync("https://basta.net/frankfurt/");
+                await page.GotoAsync("https://www.md-devdays.de/home");
+                await page.Locator("text=Speichern").First.ClickAsync();
+                await page.Locator("text=Sessions").First.ClickAsync();
+                await page.Locator("id=mat-tab-label-0-0").ClickAsync();
 
-                if (await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).IsVisibleAsync())
-                {
-                    await page.GetByRole(AriaRole.Button, new() { Name = "Alle akzeptieren" }).ClickAsync();
-                }
+                await page.Locator("text=Playwright").HighlightAsync();
+                await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
 
-                await page.Locator("body").PressAsync("Escape");
-                await page.GetByRole(AriaRole.Link, new() { Name = "Programm" }).First.ClickAsync();
-                await page.Locator("body").PressAsync("Escape");
+                var sessionLink = page.Locator(".act-card-content-container")
+                    .Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" })
+                    .GetByText("Mehr Infos");
 
-                await page.Locator("[href*=Day3]").First.ScrollIntoViewIfNeededAsync();
-                await page.Locator("[href*=Day3]").First.HighlightAsync();
-                await page.Locator("[href*=Day3]").First.ClickAsync();
+                await sessionLink.ScrollIntoViewIfNeededAsync();
+                await sessionLink.HighlightAsync();
+                await sessionLink.ClickAsync();
 
-                await page.Locator("[href*=playwright]").ScrollIntoViewIfNeededAsync();
-                await page.Locator("[href*=playwright]").HighlightAsync();
-                await page.Locator("[href*=playwright]").ClickAsync();
-
-                Assert.IsTrue((await page.TitleAsync()).Contains("Playwright"));
+                Assert.IsTrue(
+                    await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
 
                 StopTrace(browserContext, testName);
                 await browserContext.CloseAsync();

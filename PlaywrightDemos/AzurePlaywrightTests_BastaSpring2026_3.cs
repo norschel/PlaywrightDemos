@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+using Ignore = NUnit.Framework.IgnoreAttribute;
 using NUnit.Framework.Interfaces;
 using Microsoft.Playwright.NUnit;
 using Azure.Developer.Playwright;
@@ -11,9 +12,7 @@ using Azure.Identity;
 
 namespace PlaywrightDemos
 {
-    [Parallelizable(ParallelScope.Self)]
-    [Category("NUnit")]
-    [TestCategory("NUnit")]
+    //[Parallelizable(ParallelScope.Self)]
     public class AzurePlaywrightTests_BastaSpring2026_3
      : CloudBrowserPageTest
     {
