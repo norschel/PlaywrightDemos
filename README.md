@@ -1,109 +1,53 @@
 # PlaywrightDemos
 
-This repository contains Playwright C# demo code showcasing end-to-end testing capabilities for software developer conference talks.
+This repository contains Playwright C# demo code used in conference talks to showcase end-to-end testing patterns with local and cloud browser execution.
 
 ## Overview
 
-This project demonstrates various Playwright testing scenarios using C# with both MSTest and NUnit frameworks. The demos are organized by conference presentations and showcase real-world testing patterns.
+The project combines MSTest- and NUnit-based examples, organized by conference and scenario (UI smoke tests, downloads, device emulation, network mocking, tracing/video diagnostics, and Azure Playwright Testing Service usage).
 
 ## Technologies
 
-- **.NET 10.0** - Target framework
-- **Playwright** - Browser automation framework
-- **MSTest** - Primary testing framework
-- **NUnit** - Alternative testing framework
-- **Azure Playwright Testing Service** - Cloud-based browser testing
-
-## Key Features & Scenarios
-
-### Basic Testing
-
-- **Simple smoke tests** - Open website, interact with elements, verify results
-- **Data-driven tests** - Parameterized tests across multiple browsers
-- **Element location** - Various locator strategies and best practices
-
-### File Operations
-
-- **Download testing** - Download files and verify existence
-- **File handling** - Work with downloaded content
-
-### Network & API
-
-- **Network interception** - Intercept and modify network requests
-- **API mocking** - Mock backend responses
-- **Route blocking** - Block specific resources (images, scripts, etc.)
-
-### Device & Browser Testing
-
-- **Mobile device emulation** - Test with iPhone, iPad, and other devices
-- **Cross-browser testing** - Chrome, Firefox, WebKit
-- **Responsive design testing** - Viewport and device-specific scenarios
-
-### Debugging & Diagnostics
-
-- **Video recording** - Capture test execution videos
-- **Screenshots** - Take screenshots on failure or demand
-- **Tracing** - Playwright trace files for detailed debugging
-- **Test artifacts** - Organized output in TestResults folder
-
-### Cloud Testing
-
-- **Azure Playwright Testing Service** - Cloud-based parallel test execution
-- **Scalable infrastructure** - Run tests across multiple browsers simultaneously
-
-### AI-Assisted Automation
-
-This repository includes GitHub Copilot prompts that demonstrate AI-powered browser automation workflows (by @harrybin):
-
-- **[generateImage.prompt.md](.github/prompts/generateImage.prompt.md)** - Automated image generation workflow using Playwright MCP tooling
-  - Scrapes conference website to extract theme and styling information
-  - Navigates to Google Gemini AI
-  - Constructs AI prompts based on gathered context
-  - Generates custom conference presentation images
-  - Automates file downloads
-
-This showcases how Playwright can be integrated with AI tools for complex multi-step automation tasks without writing traditional test code.
+- **.NET 10.0** (target framework)
+- **Microsoft Playwright for .NET**
+- **MSTest 4.x**
+- **NUnit + NUnit3TestAdapter**
+- **Azure Playwright Testing Service**
 
 ## Project Structure
 
 ```text
 PlaywrightDemos/
-├── AzurePlaywrightTests_*.cs    # Azure cloud-based tests (NUnit)
-├── PlaywrightE2ETests_*.cs      # Conference-specific demos (MSTest)
-├── CloudBrowserPageTest.cs      # Azure Playwright base class
-├── PlawrightServiceSetup.cs     # Azure service configuration
-├── LocalServer.cs               # Local test server utilities
-├── testdaten/                   # Test data files
-└── TestResults/                 # Test execution artifacts
+├── PlaywrightDemos/
+│   ├── PlayDemo.csproj
+│   ├── PlaywrightE2ETests_*.cs
+│   ├── AzurePlaywrightTests_*.cs
+│   ├── CloudBrowserPageTest.cs
+│   ├── PlawrightServiceSetup.cs
+│   ├── LocalServer.cs
+│   ├── testdaten/
+│   └── AzurePlaywrightServices/
+├── .github/workflows/
+│   ├── dotnet.yml
+│   └── docker.yml
+└── README.md
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- .NET 9.0 SDK
-- Playwright browsers (automatically installed on first run)
+- .NET 10.0 SDK
+- PowerShell (`pwsh`) for Playwright browser installation
 
 ### Installation
-
-1. Clone the repository:
 
 ```bash
 git clone https://github.com/norschel/PlaywrightDemos.git
 cd PlaywrightDemos
-```
-
-2. Restore dependencies:
-
-```bash
-dotnet restore
-```
-
-3. Install Playwright browsers:
-
-```bash
-dotnet build
-pwsh PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
+dotnet restore ./PlaywrightDemos/PlayDemo.csproj
+dotnet build ./PlaywrightDemos/PlayDemo.csproj --no-restore
+pwsh ./PlaywrightDemos/bin/Debug/net10.0/playwright.ps1 install
 ```
 
 ### Running Tests
@@ -111,57 +55,48 @@ pwsh PlaywrightDemos/bin/Debug/net9.0/playwright.ps1 install
 Run all tests:
 
 ```bash
-dotnet test
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --no-build
 ```
 
-Run specific test class:
+Run CI-tagged tests:
 
 ```bash
-dotnet test --filter "FullyQualifiedName~PlaywrightE2ETests_IT_Tage_2025"
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --no-build --filter "TestCategory=CICD"
 ```
 
-Run tests by category:
+Run a specific test class:
 
 ```bash
-dotnet test --filter "TestCategory=NUnit"
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~PlaywrightE2ETests_IT_Tage_2025"
 ```
 
-## Conference Presentations
+## Conference Demos Included
 
-This repository includes demo code from the following conferences:
-
-- **IT-Tage 2025** - Latest demos with Azure Playwright Testing
-- **MDD (Madgeburger Developer Days) 2024/2025**
-- **DDC (.NET Developer Conference Cologne) 2023/2024**
-- **BASTA! 2023/2024/Spring 2026**
-- **KET (Karlsruher Entwicklertage) 2023**
-- **WDC (Web Developer Conference) 2023**
+- BASTA! 2023, 2024, Spring 2026
+- MDD 2024, 2025, 2026
+- DDC 2023, 2024
+- IT-Tage 2025
+- KET 2023
+- WDC 2023
 
 ## Key Dependencies
 
-- `Microsoft.Playwright.MSTest` (1.57.0)
-- `Microsoft.Playwright.NUnit` (1.57.0)
-- `Azure.Developer.Playwright.NUnit` (1.0.0)
-- `MSTest` (4.0.2)
-- `Azure.Identity` (1.17.1)
+- `Microsoft.Playwright.MSTest` (`1.58.0`)
+- `Microsoft.Playwright.NUnit` (`1.58.0`)
+- `Azure.Developer.Playwright.NUnit` (`1.0.0`)
+- `MSTest` / `MSTest.TestAdapter` / `MSTest.TestFramework` (`4.1.0`)
+- `Azure.Identity` (`1.18.0`)
 
-## Test Artifacts
+## AI-Assisted Automation Prompt
 
-Test execution produces:
+The repository also includes a Copilot prompt:
 
-- **Videos** - In `videos/` folder
-- **Traces** - In `trace/` folder (open with Playwright Trace Viewer)
-- **Screenshots** - Embedded in trace files
-- **Test results** - XML/TRX format in `TestResults/`
+- [`generateImage.prompt.md`](.github/prompts/generateImage.prompt.md)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE).
 
 ## Author
 
 Nico Orschel
-
----
-
-*This repository is continuously updated with new demos and examples from conference presentations.*
