@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+using NUnit.Framework;
 
 namespace PlayDemo;
 
@@ -38,7 +39,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = _slomo,
+                SlowMo = Slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -141,7 +142,7 @@ public class PlaywrightE2ETests_MDD2026
         var browserOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
-            SlowMo = _slomo
+            SlowMo = Slomo
         };
 
         switch (BrowserName)
@@ -172,8 +173,8 @@ public class PlaywrightE2ETests_MDD2026
         await using var browser = await playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
             {
-                Headless = _isHeadless,
-                SlowMo = _slomo,
+                Headless = IsHeadless,
+                SlowMo = Slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -201,7 +202,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = _slomo
+                SlowMo = Slomo
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -236,7 +237,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = _slomo
+                SlowMo = Slomo
             });
 
         // execute test on iPhone 13 landscape
@@ -284,7 +285,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = _slomo
+                SlowMo = Slomo
             });
 
         var browserContextOptions = new BrowserNewContextOptions
@@ -332,7 +333,7 @@ public class PlaywrightE2ETests_MDD2026
         var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
-            SlowMo = _slomo
+            SlowMo = Slomo
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
@@ -411,7 +412,7 @@ public class PlaywrightE2ETests_MDD2026
         var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
-            SlowMo = _slomo
+            SlowMo = Slomo
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
