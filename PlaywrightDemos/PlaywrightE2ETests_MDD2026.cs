@@ -3,6 +3,8 @@ using Microsoft.Playwright;
 namespace PlayDemo;
 
 [TestClass]
+[TestCategory("MSTest")]
+[TestCategory("CICD")]
 #pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class PlaywrightE2ETests_MDD2026
 #pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
