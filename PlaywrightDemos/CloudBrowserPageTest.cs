@@ -5,7 +5,7 @@ using Microsoft.Playwright;
 
 namespace PlaywrightDemos;
 
-public class CloudBrowserPageTest : PageTest
+public class CloudBrowserPageTest : BrowserTest
 {
     public override async Task<(string, BrowserTypeConnectOptions?)?> ConnectOptionsAsync()
     {

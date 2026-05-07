@@ -73,7 +73,7 @@ namespace PlaywrightDemos
             await using (browser)
             {
                 var browserContext = await browser.NewContextAsync(contextOptions);
-                StartTrace(browserContext);
+                await StartTrace(browserContext);
 
                 var page = await browserContext.NewPageAsync();
                 await page.GotoAsync("https://www.md-devdays.de/home");
@@ -95,14 +95,14 @@ namespace PlaywrightDemos
                 Assert.IsTrue(
                     await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
 
-                StopTrace(browserContext, testName);
+                await StopTrace(browserContext, testName);
                 await browserContext.CloseAsync();
             }
         }
 
         #region Helper
 
-        public async void StartTrace(IBrowserContext context)
+        public async Task StartTrace(IBrowserContext context)
         {
             if (!_isEnabledTracing)
             {
@@ -117,7 +117,7 @@ namespace PlaywrightDemos
             });
         }
 
-        public static void StopTrace(IBrowserContext context, string testName)
+        public static async Task StopTrace(IBrowserContext context, string testName)
         {
             if (!_isEnabledTracing)
             {
@@ -128,7 +128,7 @@ namespace PlaywrightDemos
             {
                 Path = testName + "_trace.zip"
             };
-            context.Tracing.StopAsync(traceOptions).Wait();
+            await context.Tracing.StopAsync(traceOptions);
 
             try
             {

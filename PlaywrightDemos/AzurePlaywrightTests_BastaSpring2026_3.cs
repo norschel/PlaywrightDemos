@@ -72,7 +72,7 @@ namespace PlaywrightDemos
             await using (browser)
             {
                 var browserContext = await browser.NewContextAsync(contextOptions);
-                StartTrace(browserContext);
+                await StartTrace(browserContext);
 
                 var page = await browserContext.NewPageAsync();
                 await page.GotoAsync("https://basta.net/frankfurt/");
@@ -96,14 +96,14 @@ namespace PlaywrightDemos
 
                 Assert.IsTrue((await page.TitleAsync()).Contains("Playwright"));
 
-                StopTrace(browserContext, testName);
+                await StopTrace(browserContext, testName);
                 await browserContext.CloseAsync();
             }
         }
 
         #region Helper
 
-        public async void StartTrace(IBrowserContext context)
+        public async Task StartTrace(IBrowserContext context)
         {
             if (!_isEnabledTracing)
             {
@@ -118,7 +118,7 @@ namespace PlaywrightDemos
             });
         }
 
-        public static void StopTrace(IBrowserContext context, string testName)
+        public static async Task StopTrace(IBrowserContext context, string testName)
         {
             if (!_isEnabledTracing)
             {
@@ -129,7 +129,7 @@ namespace PlaywrightDemos
             {
                 Path = testName + "_trace.zip"
             };
-            context.Tracing.StopAsync(traceOptions).Wait();
+            await context.Tracing.StopAsync(traceOptions);
 
             try
             {
