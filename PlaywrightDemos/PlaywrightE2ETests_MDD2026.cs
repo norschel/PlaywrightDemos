@@ -36,7 +36,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = 2000,
+                SlowMo = _slomo,
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -139,7 +139,7 @@ public class PlaywrightE2ETests_MDD2026
         var browserOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
-            SlowMo = 2000
+            SlowMo = _slomo
         };
 
         switch (BrowserName)
@@ -199,7 +199,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -234,7 +234,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
 
         // execute test on iPhone 13 landscape
@@ -282,7 +282,7 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = 2000
+                SlowMo = _slomo
             });
 
         var browserContextOptions = new BrowserNewContextOptions
@@ -330,7 +330,7 @@ public class PlaywrightE2ETests_MDD2026
         var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
-            SlowMo = 2000
+            SlowMo = _slomo
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
@@ -409,7 +409,7 @@ public class PlaywrightE2ETests_MDD2026
         var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
-            SlowMo = 2000
+            SlowMo = _slomo
         };
 
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
