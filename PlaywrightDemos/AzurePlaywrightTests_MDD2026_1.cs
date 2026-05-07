@@ -11,7 +11,7 @@ using Azure.Identity;
 
 namespace PlaywrightDemos
 {
-    [Parallelizable(ParallelScope.Self)]
+    [Parallelizable(ParallelScope.All)]
     [Category("NUnit")]
     [TestCategory("NUnit")]
     public class AzurePlaywrightTests_MDD2026_1 : CloudBrowserPageTest

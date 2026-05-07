@@ -9,9 +9,10 @@ using Microsoft.Playwright.NUnit;
 using Azure.Developer.Playwright;
 using Azure.Identity;
 
+// howto execute: dotnet test --filter "Category=NUnit" -- NUnit.NumberOfTestWorkers=20
 namespace PlaywrightDemos
 {
-    [Parallelizable(ParallelScope.Self)]
+    [Parallelizable(ParallelScope.All)]
     [Category("NUnit")]
     [TestCategory("NUnit")]
     public class AzurePlaywrightTests_MDD2026 : CloudBrowserPageTest
