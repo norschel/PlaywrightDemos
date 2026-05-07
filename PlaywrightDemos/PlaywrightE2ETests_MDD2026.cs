@@ -307,7 +307,7 @@ public class PlaywrightE2ETests_MDD2026
             var body = await response.BodyAsync();
 
             var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "ostern_harry.jpg");
+            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_harry.jpg");
             body = await File.ReadAllBytesAsync(filePath);
 
             await route.FulfillAsync(new RouteFulfillOptions
@@ -327,7 +327,7 @@ public class PlaywrightE2ETests_MDD2026
             var body = await response.BodyAsync();
 
             var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "ostern_nico.jpg");
+            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_nico.jpg");
             body = await File.ReadAllBytesAsync(filePath);
 
             await route.FulfillAsync(new RouteFulfillOptions
@@ -366,7 +366,7 @@ public class PlaywrightE2ETests_MDD2026
     }
 
     [TestMethod]
-    public async Task MDD2026_NetworkRequest_FullTest_EasternTheme()
+    public async Task MDD2026_NetworkRequest_FullTest_TanzInDenMai()
     {
         var playwright = await Playwright.CreateAsync();
 
@@ -380,33 +380,13 @@ public class PlaywrightE2ETests_MDD2026
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
 
-        await page.RouteAsync("**/*Header*.jpg*", async route =>
-        {
-            var response = await route.FetchAsync();
-            var body = await response.BodyAsync();
-
-            var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "ostern_stage.jpg");
-            body = await File.ReadAllBytesAsync(filePath);
-
-            await route.FulfillAsync(new RouteFulfillOptions
-            {
-                Response = response,
-                BodyBytes = body,
-                Headers = new Dictionary<string, string>(response.Headers)
-                {
-                    ["Content-Type"] = "application/image-jpeg",
-                }
-            });
-        });
-
         await page.RouteAsync("**/em/Media2/File/32fc283c-7fc4-4809-a066-7b1439bb081d", async route =>
         {
             var response = await route.FetchAsync();
             var body = await response.BodyAsync();
 
             var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "ostern_harry.jpg");
+            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_harry.jpg");
             body = await File.ReadAllBytesAsync(filePath);
 
             await route.FulfillAsync(new RouteFulfillOptions
@@ -426,7 +406,7 @@ public class PlaywrightE2ETests_MDD2026
             var body = await response.BodyAsync();
 
             var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "ostern_nico.jpg");
+            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_nico.jpg");
             body = await File.ReadAllBytesAsync(filePath);
 
             await route.FulfillAsync(new RouteFulfillOptions
@@ -455,16 +435,14 @@ public class PlaywrightE2ETests_MDD2026
         await sessionLink.HighlightAsync();
         await sessionLink.ClickAsync();
 
-        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session_eastern.png" });
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session_mai.png" });
 
         await page.EvaluateAsync(@"
             () => {
-                if (document.getElementById('easter-canvas')) {
-                    return;
-                }
+                if (document.getElementById('mai-canvas')) return;
 
                 const canvas = document.createElement('canvas');
-                canvas.id = 'easter-canvas';
+                canvas.id = 'mai-canvas';
                 Object.assign(canvas.style, {
                     position: 'fixed',
                     left: '0',
@@ -478,26 +456,44 @@ public class PlaywrightE2ETests_MDD2026
 
                 const ctx = canvas.getContext('2d');
 
-                // Easter melody: ""Häschen in der Grube"" (traditional German Easter song)
-                if (!window.__easterLoop) {
+                // Musik: ""Der Mai ist gekommen"" (3/4 Walzertakt, D-Dur)
+                if (!window.__maiLoop) {
                     const AudioCtx = window.AudioContext || window.webkitAudioContext;
                     if (AudioCtx) {
                         const ctxAudio = new AudioCtx();
-                        const tempo = 120;
+                        const tempo = 126;
                         const beat = 60 / tempo;
-                        // Häschen in der Grube: C D E C | C D E C | E F G | E F G
-                        // G A G F E C | G A G F E C | C G C | C G C
+                        // D-Dur: A4=440 H4=494 Fis4=370 E4=330 G4=392 D5=587
                         const melody = [
-                            [523, 0.5], [587, 0.5], [659, 0.5], [523, 0.5],   // C D E C
-                            [523, 0.5], [587, 0.5], [659, 0.5], [523, 0.5],   // C D E C
-                            [659, 0.5], [698, 0.5], [784, 1],                  // E F G
-                            [659, 0.5], [698, 0.5], [784, 1],                  // E F G
-                            [784, 0.375], [880, 0.125], [784, 0.25], [698, 0.25], [659, 0.5], [523, 0.5], // G A G F E C
-                            [784, 0.375], [880, 0.125], [784, 0.25], [698, 0.25], [659, 0.5], [523, 0.5], // G A G F E C
-                            [523, 0.5], [392, 0.5], [523, 1],                  // C G C
-                            [523, 0.5], [392, 0.5], [523, 1],                  // C G C
+                            // ""Der Mai ist ge-kom-men,""
+                            [440,0.5],[440,0.5],[440,0.5],
+                            [370,0.5],[440,0.5],[494,0.5],
+                            [440,1.5],
+                            // ""die Bäu-me schla-gen aus,""
+                            [440,0.5],[440,0.5],[370,0.5],
+                            [330,1.5],
+                            // ""da-heim bleibt wer Lust hat,""
+                            [370,0.5],[370,0.5],[370,0.5],
+                            [330,0.5],[370,0.5],[392,0.5],
+                            [440,1.5],
+                            // ""wen Gott nicht rei-sen lässt.""
+                            [440,1.0],[440,0.5],
+                            [440,1.5],
+                            // ""Wohl ü-ber die Ber-ge,""
+                            [494,0.5],[494,0.5],[494,0.5],
+                            [440,0.5],[494,0.5],[587,0.5],
+                            [494,1.5],
+                            // ""wohl durch das tie-fe Tal,""
+                            [440,0.5],[440,0.5],[494,0.5],
+                            [440,1.5],
+                            // ""der Wald ist wie ein Haus,""
+                            [370,0.5],[370,0.5],[370,0.5],
+                            [330,0.5],[370,0.5],[392,0.5],
+                            [440,1.5],
+                            // ""im früh-en Mor-gen-tal.""
+                            [440,0.5],[370,0.5],
+                            [330,1.5],
                         ];
-
                         const playOnce = () => {
                             let t = ctxAudio.currentTime + 0.05;
                             for (const [freq, beats] of melody) {
@@ -514,14 +510,12 @@ public class PlaywrightE2ETests_MDD2026
                             }
                             return t - ctxAudio.currentTime;
                         };
-
                         const loop = () => {
-                            const duration = playOnce();
-                            setTimeout(loop, Math.max(0, duration * 1000));
+                            const dur = playOnce();
+                            setTimeout(loop, Math.max(0, dur * 1000));
                         };
-
                         ctxAudio.resume().then(() => loop()).catch(() => {});
-                        window.__easterLoop = true;
+                        window.__maiLoop = true;
                     }
                 }
 
@@ -532,137 +526,162 @@ public class PlaywrightE2ETests_MDD2026
                 resize();
                 window.addEventListener('resize', resize);
 
-                // Easter rabbit state
-                const rabbit = {
-                    x: -80,
-                    y: canvas.height - 120,
-                    frame: 0,
-                    speed: 3,
-                    hopPhase: 0,
-                };
+                // Maibäume (Hintergrund)
+                const maypoles = Array.from({ length: 4 }, (_, i) => ({
+                    x: (canvas.width / 4) * i + canvas.width / 8,
+                    phase: (i / 4) * Math.PI * 2,
+                }));
 
-                // Colored Easter eggs scattered on the ground
-                const eggs = [];
-                for (let i = 0; i < 12; i++) {
-                    eggs.push({
-                        x: Math.random() * canvas.width,
-                        y: canvas.height - 30 - Math.random() * 40,
-                        color1: `hsl(${Math.random() * 360}, 80%, 60%)`,
-                        color2: `hsl(${Math.random() * 360}, 80%, 75%)`,
-                        r: 12 + Math.random() * 8,
-                    });
-                }
+                // Gartenzwerge – tanzen von unten herein
+                const hatColors = ['#cc0000','#0044cc','#228B22','#8B0000','#FF6600','#9900cc'];
+                const gnomes = Array.from({ length: 6 }, (_, i) => ({
+                    x: (canvas.width / 6) * i + canvas.width / 12,
+                    y: canvas.height + 160,
+                    targetY: canvas.height - 160 - (i % 3) * 35,
+                    phase: (i / 6) * Math.PI * 2,
+                    riseSpeed: 0.8 + (i % 3) * 0.2,
+                    hatColor: hatColors[i],
+                }));
 
-                const drawEgg = (egg) => {
+                // Blüten und Blätter steigen von unten auf
+                const particles = Array.from({ length: 35 }, () => ({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height + Math.random() * 300,
+                    speed: 0.4 + Math.random() * 0.9,
+                    sway: Math.random() * Math.PI * 2,
+                    size: 5 + Math.random() * 9,
+                    color: `hsl(${Math.random() * 120 + 80}, 80%, 55%)`,
+                    isFlower: Math.random() > 0.4,
+                    rot: Math.random() * Math.PI * 2,
+                }));
+
+                const drawMaypole = (x, t) => {
+                    const poleH = 220, groundY = canvas.height - 10;
+                    const cols = ['#cc0000','#00aa44','#0055cc','#ffcc00','#cc00aa'];
                     ctx.save();
-                    ctx.translate(egg.x, egg.y);
-                    ctx.scale(0.75, 1);
-                    ctx.beginPath();
-                    ctx.arc(0, 0, egg.r, 0, Math.PI * 2);
-                    ctx.fillStyle = egg.color1;
-                    ctx.fill();
-                    // stripe decoration
-                    ctx.beginPath();
-                    ctx.rect(-egg.r, -3, egg.r * 2, 6);
-                    ctx.fillStyle = egg.color2;
-                    ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(x, groundY); ctx.lineTo(x, groundY - poleH);
+                    ctx.strokeStyle = '#8B4513'; ctx.lineWidth = 9; ctx.stroke();
+                    for (let s = 0; s < 5; s++) {
+                        ctx.beginPath();
+                        ctx.moveTo(x - 4, groundY - s * 42);
+                        ctx.lineTo(x + 4, groundY - s * 42 - 21);
+                        ctx.strokeStyle = cols[s]; ctx.lineWidth = 4; ctx.stroke();
+                    }
+                    for (let r = 0; r < 5; r++) {
+                        const base = (r / 5) * Math.PI * 2;
+                        const angle = base + Math.sin(t * 1.5 + base) * 0.35;
+                        const len = 90;
+                        const cp1x = x + Math.cos(angle) * 50;
+                        const cp1y = groundY - poleH + 40;
+                        const endX = x + Math.cos(angle) * len;
+                        const endY = groundY - poleH + 10 + len * 0.85;
+                        ctx.beginPath(); ctx.moveTo(x, groundY - poleH);
+                        ctx.quadraticCurveTo(cp1x, cp1y, endX, endY);
+                        ctx.strokeStyle = cols[r]; ctx.lineWidth = 3; ctx.stroke();
+                    }
+                    ctx.beginPath(); ctx.arc(x, groundY - poleH, 13, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffdd00'; ctx.fill();
+                    ctx.strokeStyle = '#cc8800'; ctx.lineWidth = 2; ctx.stroke();
                     ctx.restore();
                 };
 
-                const drawRabbit = (x, y, hopOffset) => {
-                    const dy = -Math.abs(Math.sin(hopOffset)) * 30; // hop height
+                const drawGnome = (x, y, phase, hatColor) => {
+                    const sway = Math.sin(phase) * 14;
+                    const lift = Math.abs(Math.sin(phase * 1.5)) * 12;
                     ctx.save();
-                    ctx.translate(x, y + dy);
-
-                    // Body
-                    ctx.beginPath();
-                    ctx.ellipse(0, 0, 28, 22, 0, 0, Math.PI * 2);
-                    ctx.fillStyle = '#d2b48c';
-                    ctx.fill();
-
-                    // Head
-                    ctx.beginPath();
-                    ctx.arc(25, -18, 16, 0, Math.PI * 2);
-                    ctx.fillStyle = '#d2b48c';
-                    ctx.fill();
-
-                    // Left ear
-                    ctx.beginPath();
-                    ctx.ellipse(18, -52, 5, 18, -0.2, 0, Math.PI * 2);
-                    ctx.fillStyle = '#d2b48c';
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.ellipse(18, -52, 3, 14, -0.2, 0, Math.PI * 2);
-                    ctx.fillStyle = '#f4c2c2';
-                    ctx.fill();
-
-                    // Right ear
-                    ctx.beginPath();
-                    ctx.ellipse(32, -50, 5, 18, 0.2, 0, Math.PI * 2);
-                    ctx.fillStyle = '#d2b48c';
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.ellipse(32, -50, 3, 14, 0.2, 0, Math.PI * 2);
-                    ctx.fillStyle = '#f4c2c2';
-                    ctx.fill();
-
-                    // Eye
-                    ctx.beginPath();
-                    ctx.arc(32, -20, 3, 0, Math.PI * 2);
+                    ctx.translate(x + sway, y - lift);
+                    ctx.rotate(sway * 0.025);
+                    // Schuhe
+                    ctx.fillStyle = '#222';
+                    ctx.beginPath(); ctx.ellipse(-10, 52, 8, 5, -0.2, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(10, 52, 8, 5, 0.2, 0, Math.PI * 2); ctx.fill();
+                    // Beine
+                    ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.strokeStyle = '#333355';
+                    ctx.beginPath(); ctx.moveTo(-8, 22); ctx.lineTo(-10, 48 + Math.sin(phase) * 7); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(8, 22); ctx.lineTo(10, 48 - Math.sin(phase) * 7); ctx.stroke();
+                    // Körper
+                    ctx.beginPath(); ctx.ellipse(0, 2, 20, 24, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = '#3a8a3a'; ctx.fill();
+                    ctx.strokeStyle = '#256025'; ctx.lineWidth = 1.5; ctx.stroke();
+                    // Gürtel
+                    ctx.fillStyle = '#8B6914'; ctx.fillRect(-14, 8, 28, 9);
+                    ctx.fillStyle = '#ffcc00'; ctx.fillRect(-6, 9, 12, 7);
+                    // Arme im Walzertakt
+                    ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.strokeStyle = '#c68a56';
+                    ctx.beginPath(); ctx.moveTo(-20, -8); ctx.lineTo(-38, -8 + Math.sin(phase + Math.PI) * 14); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(20, -8); ctx.lineTo(38, -8 + Math.sin(phase) * 14); ctx.stroke();
+                    ctx.fillStyle = '#ffe0b2';
+                    ctx.beginPath(); ctx.arc(-38, -8 + Math.sin(phase + Math.PI) * 14, 5, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(38, -8 + Math.sin(phase) * 14, 5, 0, Math.PI * 2); ctx.fill();
+                    // Kopf
+                    ctx.beginPath(); ctx.arc(0, -30, 16, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffe0b2'; ctx.fill();
+                    ctx.strokeStyle = '#d4a47c'; ctx.lineWidth = 1; ctx.stroke();
+                    // Bart
+                    ctx.beginPath(); ctx.ellipse(0, -18, 12, 10, 0, 0, Math.PI);
+                    ctx.fillStyle = '#f8f8f8'; ctx.fill();
+                    // Augen
                     ctx.fillStyle = '#333';
-                    ctx.fill();
-
-                    // Nose
-                    ctx.beginPath();
-                    ctx.arc(40, -15, 2.5, 0, Math.PI * 2);
-                    ctx.fillStyle = '#f4a7bb';
-                    ctx.fill();
-
-                    // Tail
-                    ctx.beginPath();
-                    ctx.arc(-28, -2, 8, 0, Math.PI * 2);
-                    ctx.fillStyle = '#fff';
-                    ctx.fill();
-
-                    // Front leg
-                    const legKick = Math.sin(hopOffset * 2) * 8;
-                    ctx.beginPath();
-                    ctx.ellipse(18, 18 + legKick, 5, 10, 0.3, 0, Math.PI * 2);
-                    ctx.fillStyle = '#c4a47a';
-                    ctx.fill();
-
-                    // Back leg
-                    ctx.beginPath();
-                    ctx.ellipse(-14, 16 - legKick, 7, 12, -0.3, 0, Math.PI * 2);
-                    ctx.fillStyle = '#c4a47a';
-                    ctx.fill();
-
+                    ctx.beginPath(); ctx.arc(-5, -33, 2.5, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(5, -33, 2.5, 0, Math.PI * 2); ctx.fill();
+                    // Nase
+                    ctx.beginPath(); ctx.arc(0, -26, 3.5, 0, Math.PI * 2);
+                    ctx.fillStyle = '#f4a380'; ctx.fill();
+                    // Spitzmütze
+                    ctx.beginPath(); ctx.moveTo(-16, -40); ctx.lineTo(2, -78); ctx.lineTo(18, -40); ctx.closePath();
+                    ctx.fillStyle = hatColor; ctx.fill();
+                    ctx.strokeStyle = '#222'; ctx.lineWidth = 1; ctx.stroke();
+                    ctx.beginPath(); ctx.ellipse(0, -40, 18, 6, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = hatColor; ctx.fill();
+                    ctx.strokeStyle = '#222'; ctx.stroke();
                     ctx.restore();
                 };
 
+                const drawFlower = (x, y, size, color, rot) => {
+                    ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+                    for (let p = 0; p < 6; p++) {
+                        ctx.beginPath();
+                        ctx.arc(Math.cos((p / 6) * Math.PI * 2) * size, Math.sin((p / 6) * Math.PI * 2) * size, size * 0.5, 0, Math.PI * 2);
+                        ctx.fillStyle = color; ctx.fill();
+                    }
+                    ctx.beginPath(); ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffff88'; ctx.fill();
+                    ctx.restore();
+                };
+
+                const drawLeaf = (x, y, size, color, rot) => {
+                    ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+                    ctx.beginPath(); ctx.ellipse(0, 0, size, size * 0.45, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = color; ctx.fill();
+                    ctx.restore();
+                };
+
+                let frame = 0;
                 const draw = () => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const t = frame / 60;
 
-                    // Draw eggs
-                    for (const egg of eggs) {
-                        drawEgg(egg);
+                    for (const mp of maypoles) drawMaypole(mp.x, t + mp.phase);
+
+                    for (const p of particles) {
+                        p.y -= p.speed;
+                        p.sway += 0.018;
+                        p.x += Math.sin(p.sway) * 0.7;
+                        p.rot += 0.01;
+                        if (p.y < -20) { p.y = canvas.height + 20; p.x = Math.random() * canvas.width; }
+                        p.isFlower ? drawFlower(p.x, p.y, p.size, p.color, p.rot)
+                                   : drawLeaf(p.x, p.y, p.size, p.color, p.rot);
                     }
 
-                    // Update rabbit position
-                    rabbit.hopPhase += 0.07;
-                    rabbit.x += rabbit.speed;
-
-                    // Wrap around when rabbit goes off screen
-                    if (rabbit.x > canvas.width + 100) {
-                        rabbit.x = -100;
-                        rabbit.y = canvas.height - 100 - Math.random() * 40;
+                    for (const g of gnomes) {
+                        if (g.y > g.targetY) g.y -= g.riseSpeed;
+                        g.phase += 0.038;
+                        drawGnome(g.x, g.y, g.phase, g.hatColor);
                     }
 
-                    drawRabbit(rabbit.x, rabbit.y, rabbit.hopPhase);
-
+                    frame++;
                     requestAnimationFrame(draw);
                 };
-
                 draw();
             }
         ");
