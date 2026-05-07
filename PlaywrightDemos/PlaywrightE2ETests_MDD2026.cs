@@ -20,6 +20,9 @@ public class PlaywrightE2ETests_MDD2026
         Environment.GetEnvironmentVariable("CI") == "true" ||
         Environment.GetEnvironmentVariable("TF_BUILD") == "True" ||
         !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")) ||
+        IsRunningInContainer();
+
+    static bool IsRunningInContainer() =>
         Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ||
         File.Exists("/.dockerenv");
     #endregion
@@ -80,6 +83,14 @@ public class PlaywrightE2ETests_MDD2026
     [DataRow("Chrome")]
     public async Task MDD_DataDrivenSmokeTest(string BrowserName)
     {
+        #region containerCheck
+        bool containerCheck = ContainerCheck(BrowserName);
+        if (!containerCheck)
+        {
+            return;
+        }
+        #endregion
+
         var playwright = await Playwright.CreateAsync();
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var browserContext = await browser.NewContextAsync();
@@ -108,6 +119,19 @@ public class PlaywrightE2ETests_MDD2026
             await page.PauseAsync();
         }
         await browser.CloseAsync();
+    }
+
+    private static bool ContainerCheck(string BrowserName)
+    {
+        if (IsRunningInContainer() 
+        && (BrowserName == "Edge" 
+        || BrowserName == "Chrome"))
+        {
+            Assert.Inconclusive($"Browser channel '{BrowserName}' is not supported in Docker containers. Skipping test.");
+            return false;
+        }
+
+        return true;
     }
 
     private static async Task<IBrowser> GetBrowserAsync(IPlaywright playwright, string BrowserName)
