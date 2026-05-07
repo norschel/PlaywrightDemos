@@ -5,7 +5,9 @@ namespace PlaywrightDemos;
 //[TestClass]
 [TestCategory("MSTest")]
 [TestCategory("CICD")]
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class BastaSpring2026_Demos
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     #region Globals
     static bool _isHeadless = true;
