@@ -11,10 +11,12 @@ public class PlaywrightE2ETests_MDD2026
 {
     #region Globals
     static bool _isHeadless = false;
-    static bool localDemoMode = false;
+    static bool _localDemoMode = false;
+    static bool IsLocalDemoMode => !IsRunningOnBuildServer() && _localDemoMode;
     static bool IsHeadless => IsRunningOnBuildServer() || _isHeadless;
 
     static readonly int _slomo = 2000;
+    static int Slomo => IsRunningOnBuildServer() ? 0 : _slomo;
 
     static bool IsRunningOnBuildServer() =>
         Environment.GetEnvironmentVariable("CI") == "true" ||
@@ -56,7 +58,7 @@ public class PlaywrightE2ETests_MDD2026
         await sessionLink.HighlightAsync();
         await sessionLink.ClickAsync();
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -66,7 +68,7 @@ public class PlaywrightE2ETests_MDD2026
         Assert.IsTrue(
             await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -114,7 +116,7 @@ public class PlaywrightE2ETests_MDD2026
         Assert.IsTrue(
                    await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -255,7 +257,7 @@ public class PlaywrightE2ETests_MDD2026
         await sessionLink.HighlightAsync();
         await sessionLink.ClickAsync();
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -265,7 +267,7 @@ public class PlaywrightE2ETests_MDD2026
         Assert.IsTrue(
                    await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -312,7 +314,7 @@ public class PlaywrightE2ETests_MDD2026
         Assert.IsTrue(
                    await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -394,7 +396,7 @@ public class PlaywrightE2ETests_MDD2026
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session_route.png" });
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
@@ -722,7 +724,7 @@ public class PlaywrightE2ETests_MDD2026
             }
         ");
 
-        if (localDemoMode)
+        if (IsLocalDemoMode)
         {
             await page.PauseAsync();
         }
