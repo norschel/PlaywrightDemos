@@ -17,7 +17,9 @@ public class PlaywrightE2ETests_MDD2026
     static bool IsRunningOnBuildServer() =>
         Environment.GetEnvironmentVariable("CI") == "true" ||
         Environment.GetEnvironmentVariable("TF_BUILD") == "True" ||
-        !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
+        !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")) ||
+        Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ||
+        File.Exists("/.dockerenv");
     #endregion
 
     #region SimpleSmokeTest
