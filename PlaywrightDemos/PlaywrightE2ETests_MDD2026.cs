@@ -14,7 +14,7 @@ public class PlaywrightE2ETests_MDD2026
     static bool localDemoMode = false;
     static bool IsHeadless => IsRunningOnBuildServer() || _isHeadless;
 
-    static int _slomo = 2000;
+    static readonly int _slomo = 2000;
 
     static bool IsRunningOnBuildServer() =>
         Environment.GetEnvironmentVariable("CI") == "true" ||
