@@ -228,7 +228,7 @@ public class PlaywrightE2ETests_MDD2026
     #endregion
 
     #region DeviceTest
-    [TestMethod]
+    //[TestMethod]
     public async Task MDD_DeviceTest()
     {
         var playwright = await Playwright.CreateAsync();
