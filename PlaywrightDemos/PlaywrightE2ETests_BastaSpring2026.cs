@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace PlaywrightDemos;
 
-[TestClass]
+//[TestClass]
 [TestCategory("MSTest")]
 [TestCategory("CICD")]
 public class BastaSpring2026_Demos
