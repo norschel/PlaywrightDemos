@@ -38,8 +38,9 @@ public class PlaywrightE2ETests_MDD2026
             new BrowserTypeLaunchOptions
             {
                 Headless = IsHeadless,
-                SlowMo = Slomo,
+                SlowMo = Slomo
             });
+  
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://www.md-devdays.de/home");
