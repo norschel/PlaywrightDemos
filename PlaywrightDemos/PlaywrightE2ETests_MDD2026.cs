@@ -229,7 +229,7 @@ public class PlaywrightE2ETests_MDD2026
     #endregion
 
     #region DeviceTest
-    //[TestMethod]
+    [TestMethod]
     public async Task MDD_DeviceTest()
     {
         var playwright = await Playwright.CreateAsync();
@@ -246,7 +246,11 @@ public class PlaywrightE2ETests_MDD2026
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
+        
+        await page.GetByRole(AriaRole.Button).Filter(new() { HasText = "menu" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Sessions" }).ClickAsync();
+        
+        //await page.Locator("text=Sessions").First.ClickAsync();
         //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
         await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
