@@ -46,8 +46,8 @@ public class PlaywrightE2ETests_MDD2026
         await page.GotoAsync("https://www.md-devdays.de/home");
         await page.Locator("text=Speichern").First.ClickAsync();
         await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-
+        //await page.GetByRole(AriaRole.Tab, new() { Name = "18.05." }).ClickAsync();
+        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
 
