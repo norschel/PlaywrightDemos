@@ -2,11 +2,11 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-//[TestClass] - Disabled Tests
+[TestClass]
 [TestCategory("MSTest")]
 [TestCategory("CICD")]
 #pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
-public class PlaywrightE2ETests_MDD2026
+public class PlaywrightE2ETests_KET2026
 #pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     #region Globals
@@ -31,7 +31,7 @@ public class PlaywrightE2ETests_MDD2026
 
     #region SimpleSmokeTest
     [TestMethod]
-    public async Task MDD_SimpleSmokeTest()
+    public async Task KET2026_SimpleSmokeTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
@@ -43,21 +43,15 @@ public class PlaywrightE2ETests_MDD2026
   
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "18.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
+        await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("text=Programm").First.ClickAsync();
+        
+        await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
+
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        await page.Locator("text=Playwright").ClickAsync();
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
         if (IsLocalDemoMode)
         {
@@ -66,8 +60,9 @@ public class PlaywrightE2ETests_MDD2026
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
-        Assert.IsTrue(
-            await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
+        var title = await page.TitleAsync();
+        Assert.Contains("Karlsruher Entwicklertag 2026", title);
+        await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         if (IsLocalDemoMode)
         {
@@ -84,7 +79,7 @@ public class PlaywrightE2ETests_MDD2026
     [DataRow("Webkit")]
     [DataRow("Edge")]
     [DataRow("Chrome")]
-    public async Task MDD_DataDrivenSmokeTest(string BrowserName)
+    public async Task KET2026_DataDrivenSmokeTest(string BrowserName)
     {
         #region containerCheck
         bool containerCheck = ContainerCheck(BrowserName);
@@ -98,24 +93,20 @@ public class PlaywrightE2ETests_MDD2026
         var browser = await GetBrowserAsync(playwright, BrowserName);
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
+        await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("text=Programm").First.ClickAsync();
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
+
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        await page.Locator("text=Playwright").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
-        Assert.IsTrue(
-                   await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
+        var title = await page.TitleAsync();
+        Assert.Contains("Karlsruher Entwicklertag 2026", title);
+        await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         if (IsLocalDemoMode)
         {
@@ -230,7 +221,7 @@ public class PlaywrightE2ETests_MDD2026
 
     #region DeviceTest
     [TestMethod]
-    public async Task MDD_DeviceTest()
+    public async Task KET2026_DeviceTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
@@ -244,23 +235,14 @@ public class PlaywrightE2ETests_MDD2026
         var device = playwright.Devices["iPhone 13 landscape"];
         var browserContext = await browser.NewContextAsync(device);
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        
-        await page.GetByRole(AriaRole.Button).Filter(new() { HasText = "menu" }).ClickAsync();
-        await page.GetByRole(AriaRole.Link, new() { Name = "Sessions" }).ClickAsync();
-        
-        //await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
+        await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("text=Programm").First.ClickAsync();
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
+
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        await page.Locator("text=Playwright").ClickAsync();
 
         if (IsLocalDemoMode)
         {
@@ -269,8 +251,9 @@ public class PlaywrightE2ETests_MDD2026
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
-        Assert.IsTrue(
-                   await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
+        var title = await page.TitleAsync();
+        Assert.Contains("Karlsruher Entwicklertag 2026", title);
+        await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         if (IsLocalDemoMode)
         {
@@ -282,7 +265,7 @@ public class PlaywrightE2ETests_MDD2026
 
     #region VideoTest
     [TestMethod]
-    public async Task MDD_VideoSimpleTest()
+    public async Task KET2026_VideoSimpleTest()
     {
         var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(
@@ -300,24 +283,20 @@ public class PlaywrightE2ETests_MDD2026
         var browserContext = await browser.NewContextAsync(browserContextOptions);
 
         var page = await browserContext.NewPageAsync();
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        //await page.GetByRole(AriaRole.Tab, new() { Name = "14.05." }).ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
+        await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("text=Programm").First.ClickAsync();
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
+
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-        var sessionLink = page.Locator(".act-card-content-container").
-            Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" }).
-            GetByText("Mehr Infos");
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        await page.Locator("text=Playwright").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session.png" });
 
-        Assert.IsTrue(
-                   await page.GetByText("Der Workshop \"Testautomatisierung mit Playwright\" bietet eine umfassende Einführung").IsVisibleAsync());
+        var title = await page.TitleAsync();
+        Assert.Contains("Karlsruher Entwicklertag 2026", title);
+        await page.Locator("text=Rheinauen").IsVisibleAsync();
 
         if (IsLocalDemoMode)
         {
@@ -330,7 +309,7 @@ public class PlaywrightE2ETests_MDD2026
     #region Route Advanced
 
     [TestMethod]
-    public async Task MDD2026_NetworkRequest_FullTest()
+    public async Task KET2026_NetworkRequest_FullTest()
     {
         var playwright = await Playwright.CreateAsync();
 
@@ -343,28 +322,7 @@ public class PlaywrightE2ETests_MDD2026
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-
-        await page.RouteAsync("**/em/Media2/File/32fc283c-7fc4-4809-a066-7b1439bb081d", async route =>
-        {
-            var response = await route.FetchAsync();
-            var body = await response.BodyAsync();
-
-            var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_harry.jpg");
-            body = await File.ReadAllBytesAsync(filePath);
-
-            await route.FulfillAsync(new RouteFulfillOptions
-            {
-                Response = response,
-                BodyBytes = body,
-                Headers = new Dictionary<string, string>(response.Headers)
-                {
-                    ["Content-Type"] = "application/image-jpeg",
-                }
-            });
-        });
-
-        await page.RouteAsync("**/em/Media2/File/5ef7df86-c4ff-4345-8fd5-007d6dac7c70", async route =>
+        await page.RouteAsync("https://entwicklertag.de/cms/uploads/**/*Nico_Orschel*.png", async route =>
         {
             var response = await route.FetchAsync();
             var body = await response.BodyAsync();
@@ -384,20 +342,14 @@ public class PlaywrightE2ETests_MDD2026
             });
         });
 
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
+        await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("text=Programm").First.ClickAsync();
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
+
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-
-        var sessionLink = page.Locator(".act-card-content-container")
-            .Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" })
-            .GetByText("Mehr Infos");
-
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        await page.Locator("text=Playwright").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session_route.png" });
 
@@ -409,7 +361,7 @@ public class PlaywrightE2ETests_MDD2026
     }
 
     [TestMethod]
-    public async Task MDD2026_NetworkRequest_FullTest_TanzInDenMai()
+    public async Task KET2026_NetworkRequest_FullTest_TanzInDenMai()
     {
         var playwright = await Playwright.CreateAsync();
 
@@ -423,7 +375,7 @@ public class PlaywrightE2ETests_MDD2026
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
 
-        await page.RouteAsync("**/em/Media2/File/32fc283c-7fc4-4809-a066-7b1439bb081d", async route =>
+        await page.RouteAsync("**/speakers/**", async route =>
         {
             var response = await route.FetchAsync();
             var body = await response.BodyAsync();
@@ -443,40 +395,14 @@ public class PlaywrightE2ETests_MDD2026
             });
         });
 
-        await page.RouteAsync("**/em/Media2/File/5ef7df86-c4ff-4345-8fd5-007d6dac7c70", async route =>
-        {
-            var response = await route.FetchAsync();
-            var body = await response.BodyAsync();
+        await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("text=Programm").First.ClickAsync();
 
-            var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_nico.jpg");
-            body = await File.ReadAllBytesAsync(filePath);
+        await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
 
-            await route.FulfillAsync(new RouteFulfillOptions
-            {
-                Response = response,
-                BodyBytes = body,
-                Headers = new Dictionary<string, string>(response.Headers)
-                {
-                    ["Content-Type"] = "application/image-jpeg",
-                }
-            });
-        });
-
-        await page.GotoAsync("https://www.md-devdays.de/home");
-        await page.Locator("text=Speichern").First.ClickAsync();
-        await page.Locator("text=Sessions").First.ClickAsync();
-        await page.Locator("id=mat-tab-label-0-0").ClickAsync();
         await page.Locator("text=Playwright").HighlightAsync();
         await page.Locator("text=Playwright").ScrollIntoViewIfNeededAsync();
-
-        var sessionLink = page.Locator(".act-card-content-container")
-            .Filter(new() { HasText = "Bootcamp - Testautomatisierung mit Playwright" })
-            .GetByText("Mehr Infos");
-
-        await sessionLink.ScrollIntoViewIfNeededAsync();
-        await sessionLink.HighlightAsync();
-        await sessionLink.ClickAsync();
+        await page.Locator("text=Playwright").ClickAsync();
 
         await page.ScreenshotAsync(new PageScreenshotOptions { Path = "session_mai.png" });
 
@@ -733,6 +659,7 @@ public class PlaywrightE2ETests_MDD2026
         {
             await page.PauseAsync();
         }
+        
         await browser.CloseAsync();
     }
     #endregion
