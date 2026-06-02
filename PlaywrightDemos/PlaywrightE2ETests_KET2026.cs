@@ -62,7 +62,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
+        Assert.IsGreaterThan(await page.Locator("text*=Rheinauen").CountAsync(), 0);
         if (IsLocalDemoMode)
         {
             await page.PauseAsync();
@@ -105,7 +105,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
+        Assert.IsGreaterThan(await page.Locator("text*=Rheinauen").CountAsync(), 0);
 
         if (IsLocalDemoMode)
         {
@@ -252,7 +252,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
+        Assert.IsGreaterThan(await page.Locator("text*=Rheinauen").CountAsync(), 0);
 
         if (IsLocalDemoMode)
         {
@@ -295,7 +295,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
+        Assert.IsGreaterThan(await page.Locator("text*=Rheinauen").CountAsync(), 0);
 
         if (IsLocalDemoMode)
         {
