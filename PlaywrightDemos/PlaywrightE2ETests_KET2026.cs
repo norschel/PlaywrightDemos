@@ -40,12 +40,12 @@ public class PlaywrightE2ETests_KET2026
                 Headless = IsHeadless,
                 SlowMo = Slomo
             });
-  
+
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://entwicklertag.de/");
         await page.Locator("text=Programm").First.ClickAsync();
-        
+
         await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
 
         await page.Locator("text=Playwright").HighlightAsync();
@@ -62,8 +62,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        await page.Locator("text=Rheinauen").IsVisibleAsync();
-
+        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
         if (IsLocalDemoMode)
         {
             await page.PauseAsync();
@@ -106,7 +105,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        await page.Locator("text=Rheinauen").IsVisibleAsync();
+        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
 
         if (IsLocalDemoMode)
         {
@@ -117,8 +116,8 @@ public class PlaywrightE2ETests_KET2026
 
     private static bool ContainerCheck(string BrowserName)
     {
-        if (IsRunningInContainer() 
-        && (BrowserName == "Edge" 
+        if (IsRunningInContainer()
+        && (BrowserName == "Edge"
         || BrowserName == "Chrome"))
         {
             Assert.Inconclusive($"Browser channel '{BrowserName}' is not supported in Docker containers. Skipping test.");
@@ -253,7 +252,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        await page.Locator("text=Rheinauen").IsVisibleAsync();
+        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
 
         if (IsLocalDemoMode)
         {
@@ -296,7 +295,7 @@ public class PlaywrightE2ETests_KET2026
 
         var title = await page.TitleAsync();
         Assert.Contains("Karlsruher Entwicklertag 2026", title);
-        await page.Locator("text=Rheinauen").IsVisibleAsync();
+        Assert.IsGreaterThan(await page.Locator("text=Rheinauen").CountAsync(), 0);
 
         if (IsLocalDemoMode)
         {
@@ -659,7 +658,7 @@ public class PlaywrightE2ETests_KET2026
         {
             await page.PauseAsync();
         }
-        
+
         await browser.CloseAsync();
     }
     #endregion
