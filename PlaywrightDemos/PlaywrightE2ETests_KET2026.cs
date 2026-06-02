@@ -234,8 +234,12 @@ public class PlaywrightE2ETests_KET2026
         var device = playwright.Devices["iPhone 13 landscape"];
         var browserContext = await browser.NewContextAsync(device);
         var page = await browserContext.NewPageAsync();
+
         await page.GotoAsync("https://entwicklertag.de/");
-        await page.Locator("section").First.ClickAsync();
+        await DismissCookieBannerIfPresentAsync(page);
+
+        await page.GetByRole(AriaRole.Button, new() { Name = "Toggle navigation" }).ClickAsync();
+
         await page.Locator("text=Programm").First.ClickAsync();
 
         await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
@@ -661,6 +665,25 @@ public class PlaywrightE2ETests_KET2026
         }
 
         await browser.CloseAsync();
+    }
+    #endregion
+
+    #region HelperMethods
+     private static async Task DismissCookieBannerIfPresentAsync(IPage page)
+    {
+        var rejectButton = page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Ablehnen" });
+        if (await rejectButton.CountAsync() == 0)
+        {
+            return;
+        }
+
+        if (!await rejectButton.First.IsVisibleAsync())
+        {
+            return;
+        }
+
+        await rejectButton.First.ClickAsync();
+        await page.WaitForTimeoutAsync(250);
     }
     #endregion
 }
