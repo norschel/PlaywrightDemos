@@ -235,6 +235,7 @@ public class PlaywrightE2ETests_KET2026
         var browserContext = await browser.NewContextAsync(device);
         var page = await browserContext.NewPageAsync();
         await page.GotoAsync("https://entwicklertag.de/");
+        await page.Locator("section").First.ClickAsync();
         await page.Locator("text=Programm").First.ClickAsync();
 
         await page.GetByRole(AriaRole.Button, new() { Name = "Conference Day" }).ClickAsync();
