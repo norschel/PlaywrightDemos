@@ -92,7 +92,7 @@ namespace PlaywrightDemos
                 //    "Rheinauen text should be visible on the page");
 
                 var title = await page.TitleAsync();
-                Assert.That(title, Does.Contain("Karlsruher Entwicklertag"), "Page title should contain 'Karlsruher Entwicklertag 2026'");
+                Assert.That(title, Does.Contain("Karlsruher Entwicklertag"), "Page title should contain 'Karlsruher Entwicklertag'");
 
                 await StopTrace(browserContext, testName);
                 await browserContext.CloseAsync();
