@@ -3,7 +3,9 @@ using Microsoft.Playwright;
 namespace PlayDemo;
 
 //[TestClass]
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class MdDevDaysPlaywrightSessionTest
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     private const string SessionsOverviewUrl = "https://www.md-devdays.de/act-overview";
 

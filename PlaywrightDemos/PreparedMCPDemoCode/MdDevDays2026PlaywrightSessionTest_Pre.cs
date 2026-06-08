@@ -4,7 +4,9 @@ namespace PlayDemo;
 
 //[TestClass]
 //[TestCategory("MSTest")]
+#pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 public class MdDevDays2026PlaywrightSessionTest_Pre
+#pragma warning restore MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
 {
     private const string ActOverviewUrl = "https://www.md-devdays.de/act-overview";
 
