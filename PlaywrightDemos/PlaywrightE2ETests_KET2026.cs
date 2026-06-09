@@ -326,7 +326,8 @@ public class PlaywrightE2ETests_KET2026
         var browser = await playwright.Chromium.LaunchAsync(launchOptions);
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        await page.RouteAsync("https://entwicklertag.de/cms/uploads/**/*Nico_Orschel*.png", async route =>
+        
+        await page.RouteAsync("https://entwicklertag.de/cms/uploads/**/*Nico_*.jpg*", async route =>
         {
             var response = await route.FetchAsync();
             var body = await response.BodyAsync();
@@ -379,13 +380,13 @@ public class PlaywrightE2ETests_KET2026
         var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
 
-        await page.RouteAsync("**/speakers/**", async route =>
+        await page.RouteAsync("https://entwicklertag.de/cms/uploads/**/*Nico_*.jpg*", async route =>
         {
             var response = await route.FetchAsync();
             var body = await response.BodyAsync();
 
             var assemblyDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? AppContext.BaseDirectory;
-            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_harry.jpg");
+            var filePath = Path.Combine(assemblyDir, "testdaten", "zwerg_nico.jpg");
             body = await File.ReadAllBytesAsync(filePath);
 
             await route.FulfillAsync(new RouteFulfillOptions
