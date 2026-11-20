@@ -36,6 +36,7 @@ PlaywrightDemos/
 │   ├── PlaywrightE2ETests_BastaSpring2026.cs   # Smoke, video, download, data-driven, device, route demos
 │   ├── PlaywrightE2ETests_DDC2023.cs
 │   ├── PlaywrightE2ETests_DDC2024.cs
+│   ├── PlaywrightE2ETests_DDC2026.cs           # Nico's session: smoke, browsers, device, video, tracing, routes
 │   ├── PlaywrightE2ETests_IT_Tage_2025.cs      # Smoke, data-driven, download, device demos
 │   ├── PlaywrightE2ETests_KET2023.cs
 │   ├── PlaywrightE2ETests_MDD2024.cs
@@ -71,6 +72,9 @@ PlaywrightDemos/
 - .NET 10.0 SDK
 - PowerShell (`pwsh`) for Playwright browser installation
 
+The project targets `net10.0` and sets `<RollForward>Major</RollForward>`, allowing
+tests to run on a newer installed .NET runtime when .NET 10 is unavailable.
+
 ### Installation
 
 ```bash
@@ -80,6 +84,16 @@ dotnet restore ./PlaywrightDemos/PlayDemo.csproj
 dotnet build ./PlaywrightDemos/PlayDemo.csproj --no-restore
 pwsh ./PlaywrightDemos/bin/Debug/net10.0/playwright.ps1 install
 ```
+
+### Playwright MCP in VS Code
+
+The workspace includes [Playwright MCP](https://github.com/microsoft/playwright-mcp)
+in [`.vscode/mcp.json`](.vscode/mcp.json) for interactive browser automation with Copilot.
+It requires Node.js 20+ (including `npx`) and Google Chrome.
+
+Open **MCP: List Servers** in the Command Palette, select
+**microsoft/playwright-mcp**, choose **Start**, and confirm the server trust prompt.
+The server runs via `npx --yes @playwright/mcp@latest`; no additional .NET package is needed.
 
 ### Running Tests
 
@@ -110,6 +124,38 @@ dotnet test ./PlaywrightDemos/PlayDemo.csproj --no-build --verbosity normal \
   --logger "html;logfilename=test-results.html"
 ```
 
+### DDC 2026 Live Demo
+
+The demo opens the [DDC program](https://www.developer-world.de/ddc/ddc-programm),
+handles the optional cookie banner, selects Tuesday in the Sessionize iframe,
+and verifies Nico Orschel's "Testautomatisierung für WebApps mit Playwright" session.
+
+```bash
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~DDC2026_SimpleSmokeTest"
+```
+
+By default, the browser runs visibly in slow motion and pauses in Playwright Inspector.
+Click **Resume** to finish. Prefix the command with `CI=true` for a headless run without pauses.
+
+Two additional demos can be run separately; the existing DDC tests keep their original appearance:
+
+```bash
+# Original speaker portraits inside the session details dialog
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~DDC2026_SpeakerPhotosTest"
+
+# Christmas: Santa portrait, snow, walking snowmen and a jingle
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~DDC2026_NetworkRequest_Full_LetItSnowTest"
+```
+
+Portraits are loaded from the session's actual Sessionize speaker profiles and displayed
+beside their names above the title. The Christmas test intercepts Nico's portrait request
+with [`santa_nico.jpg`](PlaywrightDemos/testdaten/santa_nico.jpg). Both tests save their own screenshots
+and pause locally for the presentation. CI runs disable the jingle and do not pause.
+The [snow and jingle script](PlaywrightDemos/testdaten/let-it-snow.js) is shared with the IT-Tage demo.
+Only the DDC Christmas test enables walking snowmen along the bottom of the viewport:
+they appear at random intervals, move in both directions with varied speeds and sizes,
+and leave the page clickable. At most four are on screen at once.
+
 ## Conference Demos Included
 
 | Conference | File(s) | Highlighted Scenarios |
@@ -120,6 +166,7 @@ dotnet test ./PlaywrightDemos/PlayDemo.csproj --no-build --verbosity normal \
 | BASTA! Spring 2026 (Azure) | `AzurePlaywrightTests_BastaSpring2026*.cs` | Cloud browser execution via Azure Playwright Testing Service (4 variants showing progressive refinement) |
 | DDC 2023 | `PlaywrightE2ETests_DDC2023.cs` | Smoke test |
 | DDC 2024 | `PlaywrightE2ETests_DDC2024.cs` | Smoke test |
+| DDC 2026 | `PlaywrightE2ETests_DDC2026.cs` | Nico's session, smoke, data-driven (5 browsers), device emulation, video, tracing, image blocking, separate speaker-photo and Christmas demos |
 | IT-Tage 2025 | `PlaywrightE2ETests_IT_Tage_2025.cs` | Smoke, data-driven (5 browsers), file download, device emulation, tracing |
 | KET 2023 | `PlaywrightE2ETests_KET2023.cs` | Smoke test |
 | MDD 2024 | `PlaywrightE2ETests_MDD2024.cs` | Smoke, data-driven (5 browsers), file download, device emulation, video recording |
