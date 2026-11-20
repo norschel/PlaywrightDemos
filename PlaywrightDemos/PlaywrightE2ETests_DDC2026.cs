@@ -31,7 +31,7 @@ public class PlaywrightE2ETests_DDC2026
         Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ||
         File.Exists("/.dockerenv");
 
-    static async Task OpenPlaywrightSessionAsync(IPage page)
+    internal static async Task OpenPlaywrightSessionAsync(IPage page)
     {
         // The optional consent banner can appear while the embedded program is loading.
         await page.AddLocatorHandlerAsync(
@@ -68,7 +68,7 @@ public class PlaywrightE2ETests_DDC2026
             (double)bounds.Y);
     }
 
-    static async Task AssertSessionModalAsync(IPage page)
+    internal static async Task AssertSessionModalAsync(IPage page)
     {
         var modal = page.FrameLocator(ProgramFrameSelector).Locator("#sz-modal-container");
         await Assertions.Expect(modal.GetByRole(AriaRole.Heading, new() { Name = SessionTitle, Exact = true }))

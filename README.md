@@ -45,10 +45,13 @@ PlaywrightDemos/
 │   ├── PlaywrightE2ETests_WDC2023.cs
 │   │
 │   │   # NUnit-based Azure Playwright Testing Service demos
-│   ├── AzurePlaywrightTests_BastaSpring2026.cs   # Step-by-step: basic connection
-│   ├── AzurePlaywrightTests_BastaSpring2026_1.cs # + maximized window args
-│   ├── AzurePlaywrightTests_BastaSpring2026_2.cs # + cookie-banner handling
-│   ├── AzurePlaywrightTests_BastaSpring2026_3.cs # + final polished version
+│   ├── AzurePlaywrightServices/
+│   │   ├── AzurePlaywrightTests_DDC2026*.cs         # Four variants; smoke, video, and Chromium data-driven tests
+│   │   ├── AzurePlaywrightTests_KET2026*.cs.txt     # Archived; excluded from compilation and discovery
+│   │   ├── AzurePlaywrightTests_BastaSpring2026.cs   # Step-by-step: basic connection
+│   │   ├── AzurePlaywrightTests_BastaSpring2026_1.cs # + maximized window args
+│   │   ├── AzurePlaywrightTests_BastaSpring2026_2.cs # + cookie-banner handling
+│   │   └── AzurePlaywrightTests_BastaSpring2026_3.cs # + final polished version
 │   │
 │   │   # Infrastructure
 │   ├── CloudBrowserPageTest.cs    # Base class: connects PageTest to Azure Playwright Service
@@ -167,6 +170,7 @@ and leave the page clickable. At most four are on screen at once.
 | DDC 2023 | `PlaywrightE2ETests_DDC2023.cs` | Smoke test |
 | DDC 2024 | `PlaywrightE2ETests_DDC2024.cs` | Smoke test |
 | DDC 2026 | `PlaywrightE2ETests_DDC2026.cs` | Nico's session, smoke, data-driven (5 browsers), device emulation, video, tracing, image blocking, separate speaker-photo and Christmas demos |
+| DDC 2026 (Azure) | [AzurePlaywrightServices/AzurePlaywrightTests_DDC2026*.cs](PlaywrightDemos/AzurePlaywrightServices) | Four variants with three cases each: smoke, video, and Chromium data-driven; all with tracing |
 | IT-Tage 2025 | `PlaywrightE2ETests_IT_Tage_2025.cs` | Smoke, data-driven (5 browsers), file download, device emulation, tracing |
 | KET 2023 | `PlaywrightE2ETests_KET2023.cs` | Smoke test |
 | MDD 2024 | `PlaywrightE2ETests_MDD2024.cs` | Smoke, data-driven (5 browsers), file download, device emulation, video recording |
@@ -188,7 +192,17 @@ Most `PlaywrightE2ETests_*` classes are disabled (`[TestClass]` commented out) t
 
 ## Azure Playwright Testing Service
 
-The `AzurePlaywrightTests_BastaSpring2026*.cs` files demonstrate how to run Playwright tests against remote cloud browsers managed by Azure.
+The [AzurePlaywrightServices](PlaywrightDemos/AzurePlaywrightServices) folder contains the Azure conference demos.
+The DDC 2026 suite reuses the local DDC session navigation and assertions. Its four
+fixtures (`DDC2026`, `DDC2026_2`, `DDC2026_3`, and `DDC2026_4`) match the KET variants,
+with three cases each: smoke, video, and Chromium data-driven. The numbered fixtures
+inherit the shared tests to keep the scenarios consistent. Firefox and WebKit cases
+remain commented out, as in the KET versions.
+The suite uses the configured cloud browser connection rather than launching local browsers.
+
+The four KET 2026 Azure variants are preserved as `.cs.txt` files in this folder,
+following the existing archive convention. They are excluded from compilation and
+test discovery.
 
 ### How It Works
 
@@ -206,6 +220,18 @@ The `AzurePlaywrightTests_BastaSpring2026*.cs` files demonstrate how to run Play
 export PLAYWRIGHT_SERVICE_URL="wss://<your-workspace>.api.playwright.microsoft.com/accounts/<account-id>/browsers"
 dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "TestCategory=NUnit"
 ```
+
+Run all twelve DDC 2026 Azure test cases:
+
+```bash
+dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~PlaywrightDemos.AzurePlaywrightTests_DDC2026"
+```
+
+These tests run without Inspector pauses. Screenshots, traces, and recorded video
+are saved in separate fixture- and test-specific directories under
+`TestResults/<fixture name>/<scenario>` in NUnit's working directory.
+Screenshots, traces, and videos are attached to the test results. Traces and videos
+are finalized even when a scenario fails.
 
 ## Key Test Patterns
 

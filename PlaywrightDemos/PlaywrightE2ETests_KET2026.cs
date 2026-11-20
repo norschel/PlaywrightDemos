@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace PlayDemo;
 
-[TestClass]
+//[TestClass] - Tests disabled
 [TestCategory("MSTest")]
 [TestCategory("CICD")]
 #pragma warning disable MSTEST0030 // Type containing '[TestMethod]' should be marked with '[TestClass]'
