@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Microsoft.Playwright;
 
 namespace PlayDemo;
@@ -279,6 +280,50 @@ public class PlaywrightE2ETests_DDC2026
     }
     #endregion
 
+    #region Xebia Logo
+    [TestMethod]
+    public async Task DDC2026_NetworkRequest_XebiaLogoForAllImagesTest()
+    {
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new()
+        {
+            Headless = IsHeadless,
+            SlowMo = Slomo
+        });
+        await using var context = await browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+
+        var xebiaLogo = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "testdaten", "xebia_logo.svg"));
+        var replacedImageUrls = new ConcurrentDictionary<string, byte>();
+        // Match by resource type because many image URLs (ads, CDNs) have no file extension.
+        await page.RouteAsync("**/*", async route =>
+        {
+            if (route.Request.ResourceType != "image")
+            {
+                await route.FallbackAsync();
+                return;
+            }
+
+            replacedImageUrls.TryAdd(route.Request.Url, 0);
+            await route.FulfillAsync(new()
+            {
+                ContentType = "image/svg+xml",
+                BodyBytes = xebiaLogo
+            });
+        });
+
+        await OpenPlaywrightSessionAsync(page);
+        await AssertSessionModalAsync(page);
+        await AssertAllImagesShowXebiaLogoAsync(page, replacedImageUrls);
+        await page.ScreenshotAsync(new() { Path = "screenshot_ddc2026_xebia.png", FullPage = true });
+
+        if (IsLocalDemoMode)
+        {
+            await page.PauseAsync();
+        }
+    }
+    #endregion
+
     #region Speaker Photos
     [TestMethod]
     public async Task DDC2026_SpeakerPhotosTest()
@@ -462,6 +507,51 @@ public class PlaywrightE2ETests_DDC2026
             Assert.IsGreaterThan(0, await image.EvaluateAsync<int>("image => image.naturalWidth"),
                 $"The portrait of {speaker.Name} should load in the session dialog.");
         }
+    }
+    #endregion
+
+    #region Xebia Logo Helpers
+    private sealed class PageImage
+    {
+        public required string Url { get; set; }
+        public required bool IsLoaded { get; set; }
+    }
+
+    static async Task AssertAllImagesShowXebiaLogoAsync(IPage page, ConcurrentDictionary<string, byte> replacedImageUrls)
+    {
+        var images = new List<PageImage>();
+        foreach (var frame in page.Frames)
+        {
+            try
+            {
+                images.AddRange(await frame.EvaluateAsync<PageImage[]>("""
+                    async () => {
+                        const images = Array.from(document.images);
+                        // Load lazy images outside the viewport, too.
+                        images.forEach(image => image.loading = 'eager');
+                        await Promise.all(images.map(image => image.decode().catch(() => {})));
+                        return images
+                            .filter(image => /^https?:/.test(image.currentSrc))
+                            .map(image => {
+                                const url = new URL(image.currentSrc);
+                                url.hash = '';
+                                return { Url: url.href, IsLoaded: image.naturalWidth > 0 };
+                            });
+                    }
+                    """));
+            }
+            catch (PlaywrightException) when (frame.IsDetached)
+            {
+                // Ad frames can be replaced while the page is inspected.
+            }
+        }
+
+        Assert.IsNotEmpty(images, "The page should contain images.");
+        var otherImages = images
+            .Where(image => !image.IsLoaded || !replacedImageUrls.ContainsKey(image.Url))
+            .Select(image => image.Url)
+            .ToArray();
+        Assert.IsEmpty(otherImages, $"Every image should show the Xebia logo, but these did not: {string.Join(", ", otherImages)}");
     }
     #endregion
 }
