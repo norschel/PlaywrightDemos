@@ -10,6 +10,8 @@ namespace PlaywrightDemos
     [Category("NUnit")]
     public class AzurePlaywrightTests_DDC2026 : CloudBrowserPageTest
     {
+        //dotnet test --filter "Category=NUnit" -- NUnit.NumberOfTestWorkers=20
+
         [Test]
         public async Task DDC2026_SimpleSmokeTest()
         {
