@@ -38,6 +38,9 @@ public class PlaywrightE2ETests_DDC2026
         await page.AddLocatorHandlerAsync(
             page.GetByRole(AriaRole.Button, new() { Name = "Alles akzeptieren", Exact = true }),
             async button => await button.ClickAsync());
+        await page.AddLocatorHandlerAsync(
+            page.Locator("getsitecontrol-widget button.close"),
+            async button => await button.ClickAsync());
 
         await page.GotoAsync(ProgramUrl);
 
@@ -86,12 +89,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_SimpleSmokeTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(
-            new BrowserTypeLaunchOptions
-            {
-                Headless = IsHeadless,
-                SlowMo = Slomo
-            });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
 
         await using var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -141,13 +139,19 @@ public class PlaywrightE2ETests_DDC2026
         return false;
     }
 
-    private static async Task<IBrowser> GetBrowserAsync(IPlaywright playwright, string BrowserName)
+    private static async Task<IBrowser> GetBrowserAsync(IPlaywright playwright, string BrowserName, float deviceScaleFactor = 1)
     {
         var browserOptions = new BrowserTypeLaunchOptions
         {
             Headless = IsHeadless,
             SlowMo = Slomo
         };
+
+        if (OperatingSystem.IsMacOS() && !IsHeadless && BrowserName is ("Chromium" or "Edge" or "Chrome"))
+        {
+            // Keep Retina iframe coordinates consistent with the emulated viewport.
+            browserOptions.Args = [$"--force-device-scale-factor={deviceScaleFactor.ToString(System.Globalization.CultureInfo.InvariantCulture)}"];
+        }
 
         switch (BrowserName)
         {
@@ -174,15 +178,10 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_DeviceTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(
-            new BrowserTypeLaunchOptions
-            {
-                Headless = IsHeadless,
-                SlowMo = Slomo
-            });
 
         // execute test on iPhone 13 landscape
         var device = playwright.Devices["iPhone 13 landscape"];
+        await using var browser = await GetBrowserAsync(playwright, "Chromium", device.DeviceScaleFactor ?? 1);
         await using var browserContext = await browser.NewContextAsync(device);
         var page = await browserContext.NewPageAsync();
 
@@ -197,12 +196,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_VideoSimpleTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(
-            new BrowserTypeLaunchOptions
-            {
-                Headless = IsHeadless,
-                SlowMo = Slomo
-            });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
 
         await using var browserContext = await browser.NewContextAsync(new BrowserNewContextOptions
         {
@@ -221,12 +215,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_TracingTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(
-            new BrowserTypeLaunchOptions
-            {
-                Headless = IsHeadless,
-                SlowMo = Slomo
-            });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
 
         await using var browserContext = await browser.NewContextAsync();
         await browserContext.Tracing.StartAsync(new TracingStartOptions
@@ -256,12 +245,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_NetworkRequest_BlockImagesTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(
-            new BrowserTypeLaunchOptions
-            {
-                Headless = IsHeadless,
-                SlowMo = Slomo
-            });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
 
         await using var browserContext = await browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
@@ -285,11 +269,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_NetworkRequest_XebiaLogoForAllImagesTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new()
-        {
-            Headless = IsHeadless,
-            SlowMo = Slomo
-        });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
         await using var context = await browser.NewContextAsync();
         var page = await context.NewPageAsync();
 
@@ -329,11 +309,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_SpeakerPhotosTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new()
-        {
-            Headless = IsHeadless,
-            SlowMo = Slomo
-        });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
         await using var context = await browser.NewContextAsync();
         var page = await context.NewPageAsync();
 
@@ -355,11 +331,7 @@ public class PlaywrightE2ETests_DDC2026
     public async Task DDC2026_NetworkRequest_Full_LetItSnowTest()
     {
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new()
-        {
-            Headless = IsHeadless,
-            SlowMo = Slomo
-        });
+        await using var browser = await GetBrowserAsync(playwright, "Chromium");
         await using var context = await browser.NewContextAsync();
         var page = await context.NewPageAsync();
 

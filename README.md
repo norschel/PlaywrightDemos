@@ -130,7 +130,7 @@ dotnet test ./PlaywrightDemos/PlayDemo.csproj --no-build --verbosity normal \
 ### DDC 2026 Live Demo
 
 The demo opens the [DDC program](https://www.developer-world.de/ddc/ddc-programm),
-handles the optional cookie banner, selects Tuesday in the Sessionize iframe,
+handles optional cookie and newsletter banners, selects Tuesday in the Sessionize iframe,
 and verifies Nico Orschel's "Testautomatisierung für WebApps mit Playwright" session.
 
 ```bash
@@ -139,6 +139,9 @@ dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~DDC20
 
 By default, the browser runs visibly in slow motion and pauses in Playwright Inspector.
 Click **Resume** to finish. Prefix the command with `CI=true` for a headless run without pauses.
+Do not close the browser while paused: the Christmas test still checks that the dialog can be closed after resuming.
+On macOS, headed Chromium-based demos explicitly match the browser display scale to the
+context's device scale so Retina iframe coordinates remain correct, including iPhone emulation.
 
 Two additional demos can be run separately; the existing DDC tests keep their original appearance:
 
