@@ -72,11 +72,11 @@ PlaywrightDemos/
 
 ### Prerequisites
 
-- .NET 10.0 SDK
+- .NET 11.0 SDK
 - PowerShell (`pwsh`) for Playwright browser installation
 
-The project targets `net10.0` and sets `<RollForward>Major</RollForward>`, allowing
-tests to run on a newer installed .NET runtime when .NET 10 is unavailable.
+The project targets `net11.0` and sets `<RollForward>Major</RollForward>`, allowing
+tests to run on a newer installed .NET runtime when .NET 11 is unavailable.
 
 ### Installation
 
@@ -85,7 +85,7 @@ git clone https://github.com/norschel/PlaywrightDemos.git
 cd PlaywrightDemos
 dotnet restore ./PlaywrightDemos/PlayDemo.csproj
 dotnet build ./PlaywrightDemos/PlayDemo.csproj --no-restore
-pwsh ./PlaywrightDemos/bin/Debug/net10.0/playwright.ps1 install
+pwsh ./PlaywrightDemos/bin/Debug/net11.0/playwright.ps1 install
 ```
 
 ### Playwright MCP in VS Code

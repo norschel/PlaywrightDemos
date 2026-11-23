@@ -1,5 +1,5 @@
 # Stage 1: Build the test project using the .NET SDK image
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 
 WORKDIR /app
 
@@ -13,13 +13,8 @@ RUN dotnet build PlaywrightDemos/PlayDemo.csproj --no-restore -c Release
 # (browsers and their system dependencies are pre-installed)
 FROM mcr.microsoft.com/playwright/dotnet:v1.65.1-noble AS runtime
 
-# Install .NET 10 SDK (the Playwright image ships with .NET 8; the project targets net10.0)
-RUN apt-get update && apt-get install -y wget ca-certificates \
-    && wget -q https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb \
-    && dpkg -i packages-microsoft-prod.deb \
-    && rm packages-microsoft-prod.deb \
-    && apt-get update && apt-get install -y dotnet-sdk-11.0 \
-    && rm -rf /var/lib/apt/lists/*
+# The Playwright image ships with .NET 10; copy the .NET 11 SDK used for the build.
+COPY --from=build /usr/share/dotnet /usr/share/dotnet
 
 WORKDIR /app
 
