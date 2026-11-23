@@ -25,7 +25,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
     - name: Restore dependencies
       run: dotnet restore ${{env.solutionpath}}\\PlayDemo.csproj
     - name: Build
@@ -33,7 +33,7 @@ jobs:
     - name: Install missing WebKit deps
       run: npx playwright install-deps webkit
     - name: Install Playwright Browsers
-      run: ./PlaywrightDemos/bin/Debug/net10.0/playwright.ps1 install
+      run: ./PlaywrightDemos/bin/Debug/net11.0/playwright.ps1 install
 
     - name: Test
       run: |
