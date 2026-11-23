@@ -149,7 +149,7 @@ Two additional demos can be run separately; the existing DDC tests keep their or
 # Original speaker portraits inside the session details dialog
 dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~DDC2026_SpeakerPhotosTest"
 
-# Christmas: Santa portrait, snow, walking snowmen and a jingle
+# Christmas: Santa portrait, banner, snow, walking snowmen and a jingle
 dotnet test ./PlaywrightDemos/PlayDemo.csproj --filter "FullyQualifiedName~DDC2026_NetworkRequest_Full_LetItSnowTest"
 ```
 
@@ -158,9 +158,15 @@ beside their names above the title. The Christmas test intercepts Nico's portrai
 with [`santa_nico.jpg`](PlaywrightDemos/testdaten/santa_nico.jpg). Both tests save their own screenshots
 and pause locally for the presentation. CI runs disable the jingle and do not pause.
 The [snow and jingle script](PlaywrightDemos/testdaten/let-it-snow.js) is shared with the IT-Tage demo.
-Only the DDC Christmas test enables walking snowmen along the bottom of the viewport:
+Only the DDC Christmas test enables the centered, animated "Happy Christmas" banner and walking snowmen along the bottom of the viewport:
 they appear at random intervals, move in both directions with varied speeds and sizes,
 and leave the page clickable. At most four are on screen at once.
+The button in the top-right corner switches between normal snowflakes and falling
+`C#`, `.NET`, `DDC`, `Köln`, and `Xebia` symbols without restarting the animation. The symbols fall 25% slower
+than normal snowflakes. In the Christmas test,
+set `specialFlakes` to `true` to start with symbols (the default is `false`).
+The shared script only displays the button when `showFlakeToggle` is `true`;
+other demos keep their existing appearance.
 
 ## Conference Demos Included
 

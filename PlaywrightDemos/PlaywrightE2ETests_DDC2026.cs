@@ -354,8 +354,38 @@ public class PlaywrightE2ETests_DDC2026
         await AssertSessionSpeakerPhotosAsync(page, speakers);
         Assert.IsGreaterThan(0, replacedPhotos, "The speaker portrait should be replaced by the Santa photo.");
 
+        const bool specialFlakes = false;
         var snowScript = await File.ReadAllTextAsync(Path.Combine(AppContext.BaseDirectory, "testdaten", "let-it-snow.js"));
-        await page.EvaluateAsync(snowScript, new { playMusic = !IsHeadless, showSnowmen = true });
+        await page.EvaluateAsync(snowScript, new
+        {
+            playMusic = !IsHeadless,
+            showSnowmen = true,
+            showChristmasBanner = true,
+            specialFlakes,
+            showFlakeToggle = true
+        });
+        await Assertions.Expect(page.GetByRole(AriaRole.Button, new() { Name = "Spezialflocken (C#, .NET, DDC)", Exact = true }))
+            .ToBeVisibleAsync();
+
+        var banner = page.Locator("#christmas-banner");
+        await Assertions.Expect(banner).ToContainTextAsync("Happy Christmas");
+        await Assertions.Expect(banner).ToBeVisibleAsync();
+        await Assertions.Expect(banner).ToBeInViewportAsync();
+        await Assertions.Expect(banner).ToHaveCSSAsync("pointer-events", "none");
+        var bannerOffset = await banner.EvaluateAsync<double[]>("""
+            element => {
+                const bounds = element.getBoundingClientRect();
+                return [
+                    bounds.x + bounds.width / 2 - document.documentElement.clientWidth / 2,
+                    bounds.y + bounds.height / 2 - document.documentElement.clientHeight / 2
+                ];
+            }
+            """);
+        Assert.AreEqual(0d, bannerOffset[0], 2d, "The Christmas banner should be horizontally centered in the viewport excluding scrollbars.");
+        Assert.AreEqual(0d, bannerOffset[1], 16d, "The Christmas banner should float within 16 pixels of the vertical center.");
+        Assert.IsTrue(await banner.EvaluateAsync<bool>("""
+            element => element.getAnimations().some(animation => animation.playState === 'running')
+            """), "The Christmas banner should have a running animation.");
 
         var snowmen = page.Locator("#snowmen-layer");
         await Assertions.Expect(snowmen).ToHaveCSSAsync("pointer-events", "none");

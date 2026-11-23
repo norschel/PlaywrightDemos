@@ -1,4 +1,4 @@
-async ({ playMusic, showSnowmen = false }) => {
+async ({ playMusic, showSnowmen = false, showChristmasBanner = false, specialFlakes = false, showFlakeToggle = false }) => {
     if (document.getElementById('snow-canvas')) {
         return;
     }
@@ -27,6 +27,33 @@ async ({ playMusic, showSnowmen = false }) => {
     resize();
     window.addEventListener('resize', resize);
 
+    if (showFlakeToggle) {
+        const toggle = document.createElement('button');
+        toggle.id = 'snowflake-toggle';
+        toggle.type = 'button';
+        toggle.setAttribute('aria-label', 'Spezialflocken (C#, .NET, DDC)');
+        toggle.setAttribute('aria-controls', canvas.id);
+        Object.assign(toggle.style, {
+            position: 'fixed', top: '16px', right: '16px', zIndex: '10002',
+            maxWidth: 'calc(100vw - 32px)', minHeight: '44px', padding: '10px 16px',
+            border: '2px solid #e8c76b', borderRadius: '8px', color: '#fff8dc',
+            font: 'bold 14px system-ui, sans-serif', cursor: 'pointer',
+            pointerEvents: 'auto', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)'
+        });
+        const updateToggle = () => {
+            toggle.setAttribute('aria-pressed', String(specialFlakes));
+            toggle.textContent = specialFlakes ? 'Spezialflocken: AN' : 'Spezialflocken: AUS';
+            toggle.style.background = specialFlakes ? '#512b81' : '#155b38';
+        };
+        toggle.addEventListener('click', () => {
+            specialFlakes = !specialFlakes;
+            updateToggle();
+        });
+        updateToggle();
+        document.body.appendChild(toggle);
+    }
+
+    const symbols = ['C#', '.NET', 'DDC','Köln','Xebia'];
     const flakes = [];
     for (let i = 0; i < 120; i += 1) {
         flakes.push({
@@ -36,7 +63,8 @@ async ({ playMusic, showSnowmen = false }) => {
             d: Math.random() * 120,
             vx: (Math.random() - 0.5) * 1.5,
             vy: Math.random() + 0.5,
-            color: `hsla(${Math.random() * 360}, 80%, 90%, 0.9)`
+            color: `hsla(${Math.random() * 360}, 80%, 90%, 0.9)`,
+            symbol: symbols[i % symbols.length]
         });
     }
 
@@ -45,12 +73,19 @@ async ({ playMusic, showSnowmen = false }) => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         angle += 0.01;
         for (const flake of flakes) {
-            context.beginPath();
             context.fillStyle = flake.color;
-            context.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
-            context.fill();
+            if (specialFlakes) {
+                context.font = `bold ${Math.round(flake.r * 2 + 10)}px system-ui, sans-serif`;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText(flake.symbol, flake.x, flake.y);
+            } else {
+                context.beginPath();
+                context.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+                context.fill();
+            }
 
-            flake.y += Math.cos(angle + flake.d) + flake.vy + flake.r * 0.3;
+            flake.y += (Math.cos(angle + flake.d) + flake.vy + flake.r * 0.3) * (specialFlakes ? 0.75 : 1);
             flake.x += Math.sin(angle) * 0.5 + flake.vx;
             if (flake.x > canvas.width || flake.x < 0 || flake.y > canvas.height) {
                 flake.x = Math.random() * canvas.width;
@@ -60,6 +95,32 @@ async ({ playMusic, showSnowmen = false }) => {
         requestAnimationFrame(draw);
     };
     draw();
+
+    if (showChristmasBanner) {
+        const banner = document.createElement('div');
+        banner.id = 'christmas-banner';
+        banner.setAttribute('role', 'status');
+        Object.assign(banner.style, {
+            position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            boxSizing: 'border-box', maxWidth: 'calc(100vw - 32px)',
+            padding: '10px 24px', border: '2px solid #e8c76b', borderRadius: '12px',
+            background: 'linear-gradient(135deg, #155b38, #8b1e2d)',
+            color: '#fff8dc', fontFamily: 'Georgia, serif', fontWeight: 'bold',
+            fontSize: 'clamp(18px, 3vw, 30px)', textAlign: 'center',
+            boxShadow: '0 4px 18px rgba(0, 0, 0, 0.35)', pointerEvents: 'none',
+            zIndex: '10001'
+        });
+        banner.innerHTML = '<span aria-hidden="true">&#10052; </span>Happy Christmas<span aria-hidden="true"> &#10052;</span>';
+        document.body.appendChild(banner);
+        banner.animate([
+            { opacity: 0, transform: 'translate(-50%, -50%) scale(0.85)' },
+            { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }
+        ], { duration: 750, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'both' });
+        banner.animate([
+            { marginTop: '0px' },
+            { marginTop: '-10px' }
+        ], { duration: 2200, easing: 'ease-in-out', direction: 'alternate', iterations: Infinity });
+    }
 
     if (showSnowmen) {
         const layer = document.createElement('div');
