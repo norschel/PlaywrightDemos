@@ -11,14 +11,14 @@ RUN dotnet build PlaywrightDemos/PlayDemo.csproj --no-restore -c Release
 
 # Stage 2: Runtime image using the official Playwright Docker image
 # (browsers and their system dependencies are pre-installed)
-FROM mcr.microsoft.com/playwright/dotnet:v1.59.0-noble AS runtime
+FROM mcr.microsoft.com/playwright/dotnet:v1.65.1-noble AS runtime
 
 # Install .NET 10 SDK (the Playwright image ships with .NET 8; the project targets net10.0)
 RUN apt-get update && apt-get install -y wget ca-certificates \
     && wget -q https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
-    && apt-get update && apt-get install -y dotnet-sdk-10.0 \
+    && apt-get update && apt-get install -y dotnet-sdk-11.0 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
