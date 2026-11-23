@@ -16,12 +16,13 @@
   ```
 - [ ] Browser installiert (einmalig):
   ```bash
-  pwsh bin/Debug/net10.0/playwright.ps1 install chromium
+  pwsh bin/Debug/net11.0/playwright.ps1 install chromium
   ```
 - [ ] Generalprobe (schnell):
   ```bash
   DEMO_SLOWMO=0 dotnet test PlayDemo.csproj --filter "FullyQualifiedName~DDC2026LiveDemoTests"
   ```
+- [ ] Auf dem Bühnen-Mac mit dem verwendeten Display prüfen: Chromium startet unter macOS mit `--force-device-scale-factor=1`, passend zu `DeviceScaleFactor = 1` im Browser-Kontext. So bleiben die Klickkoordinaten im Sessionize-iFrame auch auf Retina-Displays korrekt.
 - [ ] IDE: Schriftgröße hoch (≥ 18 pt), Datei `Demo/DDC2026LiveDemoTests.cs` geöffnet
 - [ ] Benachrichtigungen aus (Fokus-Modus), Terminal-Font groß
 
@@ -41,7 +42,7 @@ Die Methode von oben nach unten erklären. Die Kommentare sind nummeriert:
 
 | Schritt | Code | Botschaft |
 |---|---|---|
-| 1 | `LaunchAsync(Headless = false, SlowMo)` | Sichtbar und verlangsamt, damit alle mitlesen können. In der Pipeline einfach `Headless = true` |
+| 1 | `LaunchAsync(browserOptions)`, `NewContextAsync(...)` | Sichtbar und verlangsamt, damit alle mitlesen können. Unter macOS gleicht `--force-device-scale-factor=1` die Retina-Skalierung an `DeviceScaleFactor = 1` im Kontext an. Für eine Pipeline `Headless = true` setzen und die macOS-Startoption nur bei sichtbarem Browser verwenden |
 | 2 | `AddLocatorHandlerAsync(...)` | Consent-Banner wird **automatisch** weggeklickt, egal wann es erscheint. Ohne `if`, ohne `Sleep` |
 | 3 | `GotoAsync(...)`, Menü „DDC“ → „Programm“, `ToHaveURLAsync(...)` | Wie ein echter Besucher navigieren. Das Untermenü ist ein Button mit sprechendem Namen, also wieder `GetByRole`. `ToHaveURLAsync` wartet, bis die Navigation abgeschlossen ist |
 | 4 | `FrameLocator(...)` | Ein Locator reicht für den iFrame, kein manuelles `SwitchTo().Frame()` wie bei Selenium |
@@ -76,7 +77,7 @@ Worauf das Publikum achten soll:
 Screenshot öffnen:
 
 ```bash
-open bin/Debug/net10.0/screenshot_ddc2026_livedemo.png
+open bin/Debug/net11.0/screenshot_ddc2026_livedemo.png
 ```
 
 ### 5. Bonus: „Was, wenn's kaputtgeht?“ (≈ 1 min, optional)
@@ -96,10 +97,11 @@ Den Session-Titel in Schritt 5 live ändern, z. B. ein Wort entfernen, und den T
 
 | Problem | Lösung |
 |---|---|
-| Kein Internet / Seite lädt nicht | Screenshot aus der Generalprobe zeigen (`bin/Debug/net10.0/screenshot_ddc2026_livedemo.png`) |
+| Kein Internet / Seite lädt nicht | Screenshot aus der Generalprobe zeigen (`bin/Debug/net11.0/screenshot_ddc2026_livedemo.png`) |
 | Browser öffnet sich nicht | Build und Browser-Installation prüfen (siehe nächste Zeile) |
-| Browser fehlt | `pwsh bin/Debug/net10.0/playwright.ps1 install chromium` |
-| Website oder Sessionize hat das Layout geändert | Mit Codegen live einen neuen Locator ermitteln. Das ist selbst eine gute Demo: `pwsh bin/Debug/net10.0/playwright.ps1 codegen https://www.developer-world.de/` |
+| Browser fehlt | `pwsh bin/Debug/net11.0/playwright.ps1 install chromium` |
+| Klick im iFrame scheitert unter macOS mit „outside of the viewport“ oder „intercepts pointer events“ | Prüfen, dass `--force-device-scale-factor=1` beim Browserstart und `DeviceScaleFactor = 1` im Kontext gesetzt sind; danach neu starten |
+| Website oder Sessionize hat das Layout geändert | Mit Codegen live einen neuen Locator ermitteln. Das ist selbst eine gute Demo: `pwsh bin/Debug/net11.0/playwright.ps1 codegen https://www.developer-world.de/` |
 | Das DDC-Menü klappt nicht auf | In Schritt 3 die Menü-Klicks durch `GotoAsync("https://www.developer-world.de/ddc/ddc-programm")` ersetzen |
 | Test ist zu langsam für das Zeitbudget | `DEMO_SLOWMO=300` setzen |
 
