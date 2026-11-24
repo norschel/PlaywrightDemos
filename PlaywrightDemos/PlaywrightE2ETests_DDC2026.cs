@@ -240,6 +240,69 @@ public class PlaywrightE2ETests_DDC2026
     }
     #endregion
 
+    #region DowmloadTest
+    [TestMethod]
+    public async Task HeiseMediadaten_PlaywrightDownloadTest_()
+    {
+        var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions
+            {
+                Headless = IsHeadless,
+                SlowMo = Slomo,
+            });
+        var browserContext = await browser.NewContextAsync();
+        var page = await browserContext.NewPageAsync();
+        await page.GotoAsync("https://mediadaten.heise.de/en/home/rate-cards/");
+        await page.ScreenshotAsync(new PageScreenshotOptions { Path = "heise_ratecards.png" });
+
+        var task = page.RunAndWaitForDownloadAsync(async () =>
+        {
+            await page.Locator("[href*=ct_RateCard2026]").ClickAsync();
+        }
+        );
+
+        await task.Result.SaveAsAsync("mediadaten_ct_2026.pdf");
+
+        Assert.IsTrue(File.Exists("mediadaten_ct_2026.pdf"));
+
+        await browser.CloseAsync();
+    }
+
+    [TestMethod]
+    public async Task SevenZip_PlaywrightDownloadTest_()
+    {
+        var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(
+            new BrowserTypeLaunchOptions
+            {
+                Headless = IsHeadless,
+                SlowMo = Slomo
+            });
+        var browserContext = await browser.NewContextAsync();
+        var page = await browserContext.NewPageAsync();
+
+        await page.GotoAsync("https://www.7-zip.org/");
+
+        await page.ScreenshotAsync(
+            new PageScreenshotOptions
+            {
+                Path = "SevenZipPage.png",
+            });
+
+        var task = page.RunAndWaitForDownloadAsync(async () =>
+        {
+            await page.Locator("[href*=x64]")
+            .And(page.GetByRole(AriaRole.Link))
+            .ClickAsync();
+        });
+
+        await task.Result.SaveAsAsync("7zip-x64.exe");
+        Assert.IsTrue(File.Exists("7zip-x64.exe"));
+        await browser.CloseAsync();
+    }
+    #endregion
+
     #region Route Network Mocking
     [TestMethod]
     public async Task DDC2026_NetworkRequest_BlockImagesTest()
